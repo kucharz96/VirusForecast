@@ -9,5 +9,8 @@ namespace VirusForecast.Models
     public class User : IdentityUser
     {
         public const string DOCTOR_ROLE = "Doctor";
+        public Guid? ClinicId { get; set; }
+        public virtual Clinic Clinic { get; set; }
+
     }
 }

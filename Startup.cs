@@ -34,7 +34,6 @@ namespace VirusForecast
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddDefaultTokenProviders();
 
-            User user = new User();
 
         }
 

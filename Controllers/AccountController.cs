@@ -51,19 +51,11 @@ namespace VirusForecast.Controllers
             {
                 var user = new User { UserName = model.Email, Email = model.Email,EmailConfirmed = false };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                //bool doctorRoleEx = await _roleManager.RoleExistsAsync(Models.User.DOCTOR_ROLE);
-                //if (!doctorRoleEx)
-                //{
-                //    _logger.LogInformation("Adding Doctor role");
-                //    var result3 = await _roleManager.CreateAsync(new IdentityRole(Models.User.DOCTOR_ROLE));
-                //}
-                //var result1 = await _userManager.AddToRoleAsync(user, Models.User.DOCTOR_ROLE);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
+                    _logger.LogInformation("User has doctor now");
+                    var result1 = await _userManager.AddToRoleAsync(user, Models.User.DOCTOR_ROLE);
                     //await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

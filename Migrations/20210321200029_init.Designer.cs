@@ -9,8 +9,8 @@ using VirusForecast.Data;
 namespace VirusForecast.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210318151959_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210321200029_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,16 +35,11 @@ namespace VirusForecast.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -151,6 +146,34 @@ namespace VirusForecast.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("VirusForecast.Models.Clinic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clinics");
+                });
+
+            modelBuilder.Entity("VirusForecast.Models.Region", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Regions");
+                });
+
             modelBuilder.Entity("VirusForecast.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -158,6 +181,9 @@ namespace VirusForecast.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("ClinicId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -205,6 +231,8 @@ namespace VirusForecast.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClinicId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -215,11 +243,56 @@ namespace VirusForecast.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("VirusForecast.Models.VirusCase", b =>
                 {
-                    b.HasOne("VirusForecast.Models.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ChildrenAmount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<char>("Gender")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RegionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("VirusPositive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("WorkModeId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("RegionId");
+
+                    b.HasIndex("WorkModeId");
+
+                    b.ToTable("VirusCases");
+                });
+
+            modelBuilder.Entity("VirusForecast.Models.WorkMode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkModes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -275,7 +348,55 @@ namespace VirusForecast.Migrations
 
             modelBuilder.Entity("VirusForecast.Models.User", b =>
                 {
-                    b.Navigation("Roles");
+                    b.HasOne("VirusForecast.Models.Clinic", "Clinic")
+                        .WithMany("Users")
+                        .HasForeignKey("ClinicId");
+
+                    b.Navigation("Clinic");
+                });
+
+            modelBuilder.Entity("VirusForecast.Models.VirusCase", b =>
+                {
+                    b.HasOne("VirusForecast.Models.Clinic", "Clinic")
+                        .WithMany("VirusCases")
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VirusForecast.Models.Region", "Region")
+                        .WithMany("VirusCases")
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VirusForecast.Models.WorkMode", "WorkMode")
+                        .WithMany("VirusCases")
+                        .HasForeignKey("WorkModeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+
+                    b.Navigation("Region");
+
+                    b.Navigation("WorkMode");
+                });
+
+            modelBuilder.Entity("VirusForecast.Models.Clinic", b =>
+                {
+                    b.Navigation("Users");
+
+                    b.Navigation("VirusCases");
+                });
+
+            modelBuilder.Entity("VirusForecast.Models.Region", b =>
+                {
+                    b.Navigation("VirusCases");
+                });
+
+            modelBuilder.Entity("VirusForecast.Models.WorkMode", b =>
+                {
+                    b.Navigation("VirusCases");
                 });
 #pragma warning restore 612, 618
         }
