@@ -1,8 +1,47 @@
-﻿@{
+﻿@model IEnumerable<User>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div ng-controller="accountCtrl as vm">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            List of accounts
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Email</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="i in vm.model">
+                        <td>
+                            {{i.Id}}
+                        </td>
+                        <td>
+                            {{i.Email}}
+                        </td>
+                        <td>
+                            <button type="button" ng-click="vm.Hallo(i.Email)">Click</button>
+                        </td>
+                    </tr>
+                    <tr ng-if="!vm.model || vm.model.length == 0">
+                        <td colspan="3" style="text-align: center;">
+                            No data to display!
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+@*<ng-view></ng-view>*@
+
+<script>
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model) as String);
+</script>
