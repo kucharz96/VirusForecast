@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using VirusForecast.Models;
 using VirusForecast.Models.AccountViewModels;
+using Newtonsoft.Json;
 
 namespace VirusForecast.Controllers
 {
