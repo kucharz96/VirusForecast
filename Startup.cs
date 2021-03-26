@@ -36,6 +36,7 @@ namespace VirusForecast
                .AddDefaultTokenProviders();
 
             services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<IClinicRepository, ClinicRepository>();
 
 
 
