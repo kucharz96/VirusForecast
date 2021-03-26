@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VirusForecast.Data;
+using VirusForecast.Data.Interfaces;
 using VirusForecast.Models;
 
 namespace VirusForecast
@@ -33,6 +34,9 @@ namespace VirusForecast
             services.AddIdentity<User, IdentityRole>()
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddDefaultTokenProviders();
+
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
+
 
 
         }

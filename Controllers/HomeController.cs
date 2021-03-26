@@ -6,24 +6,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using VirusForecast.Data.Interfaces;
 using VirusForecast.Models;
 
 namespace VirusForecast.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IDoctorRepository _doctorRepository;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(UserManager<User> userManager, ILogger<HomeController> logger)
+        public HomeController(IDoctorRepository doctorRepository, ILogger<HomeController> logger)
         {
             _logger = logger;
-            _userManager = userManager;
+            _doctorRepository = doctorRepository;
         }
 
         public IActionResult Index()
         {
-            var accounts = _userManager.Users.ToList();
+            var accounts = _doctorRepository.GetAll();
             return View(accounts);
         }
 
