@@ -29,16 +29,18 @@ namespace VirusForecast.Controllers
         }
 
         // GET: ClinicController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var details =_repository.Get(id);
+            return View(details);
         }
 
-        // GET: ClinicController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        // GET: ClinicController/Details/name
+        //public ActionResult Details(string name)
+        //{
+        //    var details = _repository.Get(name);
+        //    return View(details);
+        //}
 
         // POST: ClinicController/Create
         [HttpPost]
@@ -55,16 +57,10 @@ namespace VirusForecast.Controllers
             }
         }
 
-        // GET: ClinicController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
         // POST: ClinicController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(string id, IFormCollection collection)
         {
             try
             {
@@ -77,24 +73,10 @@ namespace VirusForecast.Controllers
         }
 
         // GET: ClinicController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
-        }
-
-        // POST: ClinicController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var deleted_clinic = _repository.Delete(id);
+            return View(deleted_clinic);
         }
     }
 }

@@ -17,28 +17,61 @@ namespace VirusForecast.Data
         }
 
         // <inheritdoc/>
-        public Clinic Delete(int id)
+        public void Add(string name)
         {
-            throw new NotImplementedException();
+            var clinic = new Clinic();
+            clinic.Name = name;
+            _context.Add(clinic);
+            _context.SaveChanges();
         }
 
         // <inheritdoc/>
-        public Clinic Edit(int id, string new_name)
+        public Clinic Delete(string id)
         {
-            throw new NotImplementedException();
+            var guid = new Guid(id);
+            var clinic_to_delete = _context.Clinics.FirstOrDefault(x => x.Id.Equals(guid));
+            if (clinic_to_delete != null)
+            {
+                _context.Remove(clinic_to_delete);
+                _context.SaveChanges();
+                return clinic_to_delete;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // <inheritdoc/>
-        public Clinic Get(int id)
+        public Clinic Edit(string id, string new_name)
         {
-            throw new NotImplementedException();
+            var guid = new Guid(id);
+            var clinic_to_edit = _context.Clinics.FirstOrDefault(x => x.Id.Equals(guid));
+            if (clinic_to_edit != null)
+            {
+                clinic_to_edit.Name = new_name;
+                _context.SaveChanges();
+                return clinic_to_edit;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // <inheritdoc/>
-        public Clinic Get(string name)
+        public Clinic Get(string id)
         {
-            throw new NotImplementedException();
+            var guid = new Guid(id);
+            var clinic = _context.Clinics.FirstOrDefault(x => x.Id.Equals(guid));
+            return clinic;
         }
+
+        // <inheritdoc/>
+        //public Clinic Get(string name)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         // <inheritdoc/>
         public List<Clinic> GetAll()

@@ -19,14 +19,14 @@ namespace VirusForecast.Data.Interfaces
         /// </summary>
         /// <param name="id">Identyfikator placówki.</param>
         /// <returns>WYbrana placówka.</returns>
-        Clinic Get(int id);
+        Clinic Get(string id);
 
         /// <summary>
         /// Pobranie placówki na podstawie nazwy.
         /// </summary>
         /// <param name="name">Nazwa placówki</param>
         /// <returns>Wybrana placówka.</returns>
-        Clinic Get(string name);
+        //Clinic Get(string name);
 
         /// <summary>
         /// Edytowanie wybranej placówki.
@@ -34,13 +34,19 @@ namespace VirusForecast.Data.Interfaces
         /// <param name="id">Identyfikator placówki.</param>
         /// <param name="new_name">Nowa nazwa placówki.</param>
         /// <returns>Zmieniona placówka.</returns>
-        Clinic Edit(int id, string new_name);
+        Clinic Edit(string id, string new_name);
 
         /// <summary>
         /// Usuwanie placówki.
         /// </summary>
         /// <param name="id">Identyfikator placówki do usunięcia.</param>
         /// <returns>Usunięta placówka.</returns>
-        Clinic Delete(int id);
+        Clinic Delete(string id);
+
+        /// <summary>
+        /// Dodanie placówki o zadanej nazwie.
+        /// </summary>
+        /// <param name="name">Nazwa placówki.</param>
+        void Add(string name);
     }
 }
