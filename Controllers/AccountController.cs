@@ -11,24 +11,22 @@ using Microsoft.Extensions.Logging;
 using VirusForecast.Models;
 using VirusForecast.Models.AccountViewModels;
 using Newtonsoft.Json;
+using VirusForecast.Data.Interfaces;
 
 namespace VirusForecast.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IDoctorRepository _doctorRepository;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
 
         public AccountController(
-            UserManager<User> userManager,
             SignInManager<User> signInManager,
-            RoleManager<IdentityRole> roleManager,
+            IDoctorRepository doctorRepository,
             ILogger<AccountController> logger)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _doctorRepository = doctorRepository;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -51,18 +49,18 @@ namespace VirusForecast.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.Email, Email = model.Email,EmailConfirmed = false };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var errors = await _doctorRepository.Add(user, model.Password);
+                if (errors == null)
                 {
-                    _logger.LogInformation("User has doctor now");
-                    var result1 = await _userManager.AddToRoleAsync(user, Models.User.DOCTOR_ROLE);
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("Doctor added");
                     return RedirectToLocal(returnUrl);
                 }
-                AddErrors(result);
+                else
+                {
+                    AddErrors(errors);
+                }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -96,8 +94,8 @@ namespace VirusForecast.Controllers
                 }
                 if (result.IsLockedOut)
                 {
-                    //_logger.LogWarning("User account locked out.");
-                    //return RedirectToAction(nameof(Lockout));
+                    ModelState.AddModelError(string.Empty, "Account is locked.");
+
                 }
                 else
                 {
@@ -122,9 +120,9 @@ namespace VirusForecast.Controllers
 
         #region Helpers
 
-        private void AddErrors(IdentityResult result)
+        private void AddErrors(IEnumerable<IdentityError> errors)
         {
-            foreach (var error in result.Errors)
+            foreach (var error in errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }

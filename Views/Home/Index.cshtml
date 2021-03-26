@@ -4,6 +4,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <div ng-controller="accountCtrl as vm">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -43,5 +45,10 @@
 @*<ng-view></ng-view>*@
 
 <script>
-    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model) as String);
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+new Newtonsoft.Json.JsonSerializerSettings
+{
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+}) as String);
+
 </script>

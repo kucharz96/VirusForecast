@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using VirusForecast.Data;
 using VirusForecast.Data.Interfaces;
 using VirusForecast.Models;
+using Newtonsoft.Json;
 
 namespace VirusForecast
 {
@@ -21,6 +22,7 @@ namespace VirusForecast
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -28,7 +30,9 @@ namespace VirusForecast
         // This method gets called by the runtime. Use this method to add services to the container./
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+);
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite("Data Source=database.db"));
             services.AddIdentity<User, IdentityRole>()
