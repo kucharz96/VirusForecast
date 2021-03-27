@@ -1,0 +1,47 @@
+﻿@model IEnumerable<VirusForecast.Models.Clinic>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-action="Add">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Clinic
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Clinic", new { id = item.Id.ToString() }) |
+                    @Html.ActionLink("Details", "Details", "Clinic", new { id = item.Id.ToString() }) |
+                    @Html.ActionLink("Delete", "Delete", "Clinic", new { id = item.Id.ToString() })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+new Newtonsoft.Json.JsonSerializerSettings
+{
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+}) as String);
+</script>
