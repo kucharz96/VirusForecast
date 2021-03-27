@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,10 +11,12 @@ using VirusForecast.Data.Interfaces;
 
 namespace VirusForecast.Controllers
 {
+    [Authorize(Roles = Models.User.ADMIN_ROLE)]
     public class ClinicController : Controller
     {
         private readonly ILogger<ClinicController> _logger;
         private readonly IClinicRepository _repository;
+
 
         public ClinicController( ILogger<ClinicController> logger, IClinicRepository repository)
         {
