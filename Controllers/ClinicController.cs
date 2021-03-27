@@ -22,7 +22,7 @@ namespace VirusForecast.Controllers
         }
 
         // GET: ClinicController
-        public ActionResult Index()
+        public ActionResult List()
         {
             var clinics = _repository.GetAll();
             return View(clinics);
@@ -56,7 +56,7 @@ namespace VirusForecast.Controllers
             try
             {
                 _repository.Add(collection["Name"]);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             catch
             {
@@ -78,7 +78,7 @@ namespace VirusForecast.Controllers
             try
             {
                 _repository.Edit(id, collection["Name"]);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             catch
             {
