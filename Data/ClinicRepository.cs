@@ -31,8 +31,7 @@ namespace VirusForecast.Data
         // <inheritdoc/>
         public Clinic Delete(string id)
         {
-            var guid = new Guid(id);
-            var clinic_to_delete = _context.Clinics.FirstOrDefault(x => x.Id.Equals(guid));
+            var clinic_to_delete = _context.Clinics.FirstOrDefault(x => x.Id.Equals(id));
             if (clinic_to_delete != null)
             {
                 _context.Remove(clinic_to_delete);
@@ -48,8 +47,7 @@ namespace VirusForecast.Data
         // <inheritdoc/>
         public Clinic Edit(string id, string new_name)
         {
-            var guid = new Guid(id);
-            var clinic_to_edit = _context.Clinics.FirstOrDefault(x => x.Id.Equals(guid));
+            var clinic_to_edit = _context.Clinics.FirstOrDefault(x => x.Id.Equals(id));
             if (clinic_to_edit != null)
             {
                 clinic_to_edit.Name = new_name;
@@ -65,8 +63,7 @@ namespace VirusForecast.Data
         // <inheritdoc/>
         public Clinic Get(string id)
         {
-            var guid = new Guid(id);
-            var clinic = _context.Clinics.FirstOrDefault(x => x.Id.Equals(guid));
+            var clinic = _context.Clinics.FirstOrDefault(x => x.Id.Equals(id));
             return clinic;
         }
 
