@@ -84,18 +84,21 @@ namespace VirusForecast.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                if (!_doctorRepository.CheckIfEmailConfirmed(model.Email))
+                {
+                    ModelState.AddModelError(string.Empty, "Account not confirmed or doesn`t exist.");
+                    return View(model);
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("User logged in.");
                     return RedirectToLocal(returnUrl);
-                }
-                if (result.IsLockedOut)
-                {
-                    ModelState.AddModelError(string.Empty, "Account is locked.");
-
                 }
                 else
                 {
@@ -107,9 +110,7 @@ namespace VirusForecast.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
- 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

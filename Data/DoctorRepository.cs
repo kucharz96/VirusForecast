@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirusForecast.Data.Interfaces;
 using VirusForecast.Models;
+using VirusForecast.Models.DoctorViewModel;
 
 namespace VirusForecast.Data
 {
@@ -48,8 +49,43 @@ namespace VirusForecast.Data
             return values.ToList();
         }
 
+        public User Get(string id)
+        {
+            return _context.Users.Find(id);
+        }
+        public void Edit(AddEditViewModel model)
+        {
+            var user = Get(model.Id);
+            user.EmailConfirmed = model.EmailConfirmed;
+            user.Email = model.Email;
+            user.ClinicId = model.ClinicId;
+            user.UserName = model.Email;
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,model.Password);
+            _context.SaveChanges();
+        }
 
+        public void Delete(string id)
+        {
+            _context.Users.Remove(Get(id));
+            _context.SaveChanges();
+        }
 
-
+        public bool CheckIfEmailConfirmed(string email)
+        {
+            var user = _userManager.FindByNameAsync(email).Result;
+            if (user != null)
+            {
+                if (!_userManager.IsEmailConfirmedAsync
+                     (user).Result)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -15,7 +15,6 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>UserName</th>
                         <th>Email</th>
                         <th>Clinic</th>
                         <th>Is email confirmed?</th>
@@ -27,9 +26,6 @@
                     @foreach (var doctor in Model)
                     {
                         <tr>
-                            <td>
-                                @doctor.UserName
-                            </td>
                             <td>
                                 @doctor.Email
                             </td>
@@ -43,15 +39,18 @@
                                 @(doctor.EmailConfirmed ? "Yes" : "No")
                             </td>
                             <td>
-                                <a href="#" class="btn-outline-primary">Edit</a>
-                                <a href="#" class="btn-outline-danger">Delete</a>
+                                <a asp-controller="Doctor" asp-action="Edit" asp-route-id="@doctor.Id" class="btn-outline-primary">Edit</a>
+                                <form asp-action="Delete" asp-controller="Doctor" method="post">
+                                    <input type="hidden" name="id" value="@doctor.Id" />
+                                    <button type="submit" class="btn-outline-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     }
 
                 </tbody>
             </table>
-            <a href="#" class="btn-outline-info">Create</a>
+            <a asp-controller="Doctor" asp-action="Add" class="btn-outline-info">Create</a>
         </div>
     </div>
 @*<ng-view></ng-view>*@

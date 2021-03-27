@@ -7,7 +7,7 @@ namespace VirusForecast.Models
 {
     public class WorkMode
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<VirusCase> VirusCases { get; set; }
         

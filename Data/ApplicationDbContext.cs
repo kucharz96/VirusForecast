@@ -25,19 +25,18 @@ namespace VirusForecast.Data
 
         }
 
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-        //    base.OnModelCreating(builder);
-        //    builder.Entity<User>()
-        //        .HasOne<Clinic>(e => e.Clinic)
-        //        .WithMany(d => d.Users)
-        //        .HasForeignKey(e => e.ClinicId);
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<User>()
+                .HasOne<Clinic>(e => e.Clinic)
+                .WithMany(d => d.Users)
+                .HasForeignKey(e => e.ClinicId)
+                .OnDelete(DeleteBehavior.Cascade);
+         
 
-        //}
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseLazyLoadingProxies();
-        //}
+        }
+
 
     }
 }

@@ -24,9 +24,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="List">Doctors</a>
-                        </li>
+                        @if (this.User.IsInRole(VirusForecast.Models.User.ADMIN_ROLE))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="List">Doctors</a>
+                            </li>
+                        }
+
                         @await Html.PartialAsync("_LoginPartial")
 
                     </ul>
