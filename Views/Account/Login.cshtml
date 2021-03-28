@@ -6,47 +6,80 @@
 @{
     ViewData["Title"] = "Log in";
 }
-<h2>@ViewData["Title"]</h2>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                        </label>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Log in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/adminlte.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                <form id="account" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                    <div class="input-group mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="email" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a asp-action="ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" class="form-control" placeholder="password" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <label asp-for="RememberMe">
+                                    <input asp-for="RememberMe" />
+                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <p>
+                                <a asp-action="ForgotPassword">Forgot your password?</a>
+                            </p>
+                            <p>
+                                <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger small"></div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/adminlte.min.js"></script>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
