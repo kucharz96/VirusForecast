@@ -2,12 +2,14 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+@section Title{ 
+<h1>Details of @Model.Name</h1>
+} 
 
 <div>
-    <h4>Clinic</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -25,8 +27,8 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", "Clinic", new { id = Model.Id.ToString() }) |
-    <a asp-action="List">Back to List</a>
+    @Html.ActionLink("Edit", "Edit", "Clinic", new { id = Model.Id.ToString() }, new { @class = "btn btn-primary" })
+    <a type="button" asp-action="List" class="btn btn-dark">Back to List <i class="fa fa-arrow-left" aria-hidden="true"></i></a>
 </div>
 
 <script>
