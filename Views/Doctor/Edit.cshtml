@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label asp-for="ClinicId"></label>
                 <select asp-for="ClinicId" class="form-control" asp-items="@Model.Clinics">
-                    <option>--Please select one--</option>
+                    <option value="-1" selected disabled hidden>--Please select one--</option>
                 </select>
                 <span asp-validation-for="ClinicId" class="text-danger"></span>
             </div>

@@ -90,10 +90,11 @@ namespace VirusForecast.Controllers
         }
 
         // GET: ClinicController/Delete/5
+        [HttpPost]
         public ActionResult Delete(string id)
         {
-            var deleted_clinic = _repository.Delete(id);
-            return View(deleted_clinic);
+            _repository.Delete(id);
+            return RedirectToAction(nameof(List));
         }
     }
 }
