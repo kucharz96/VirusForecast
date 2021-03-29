@@ -1,42 +1,47 @@
 ﻿@model IEnumerable<VirusForecast.Models.Clinic>
 
 @{
-    ViewData["Title"] = "List";
+    ViewData["Title"] = "Clinics";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-<h1>List</h1>
+@section Title {
+    <h1>Clinics</h1>
+}
 
-<p>
-    <a asp-action="Add">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                Clinic
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "Clinic", new { id = item.Id.ToString() }) |
-                    @Html.ActionLink("Details", "Details", "Clinic", new { id = item.Id.ToString() }) |
-                    @Html.ActionLink("Delete", "Delete", "Clinic", new { id = item.Id.ToString() })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div class="panel panel-default" ng-controller="clinicCtrl as vm">
+    <div class="panel-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="i in vm.model">
+                    <tr>
+                        <td>
+                            {{i.Name}}
+                        </td>
+                        <td>
+                            <div class="row">
+
+                                <a href="~/Clinic/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
+                                <a href="~/Clinic/Details/{{i.Id}}" class="btn btn-info" style="margin-right:5px;">Details</a>
+                                <form asp-action="Delete" asp-controller="Clinic" method="post">
+                                    <input type="hidden" name="id" value="{{i.Id}}" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<a asp-controller="Clinic" asp-action="Add" class="btn btn-success">Add <i class="fa fa-plus" aria-hidden="true"></i></a>
 
 <script>
     var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,

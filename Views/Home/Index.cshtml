@@ -5,13 +5,12 @@
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-
+@section Title {
+    <h1>Accounts</h1>
+}
 
 <div ng-controller="accountCtrl as vm">
     <div class="panel panel-default">
-        <div class="panel-heading">
-            List of accounts
-        </div>
         <div class="panel-body">
             <table class="table table-bordered">
                 <thead>

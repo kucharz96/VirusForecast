@@ -2,60 +2,56 @@
 
 @{
     ViewData["Title"] = "Doctors";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@section Title {
+    <h1>Doctors</h1>
 }
 
 
-
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            List of doctors
-        </div>
-        <div class="panel-body">
-            <table class="table table-bordered">
-                <thead>
+<div class="panel panel-default" ng-controller="accountCtrl as vm">
+    <div class="panel-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Clinic</th>
+                    <th>Is email confirmed?</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="i in vm.model">
                     <tr>
-                        <th>Email</th>
-                        <th>Clinic</th>
-                        <th>Is email confirmed?</th>
-                        <th></th>
-
+                        <td>
+                            {{i.Email}}
+                        </td>
+                        <td>
+                            {{i.Clinic.Name}}
+                        </td>
+                        <td>
+                             {{i.EmailConfirmed ? "Yes" : "No"}}
+                        </td>
+                        <td>
+                            <div class="row">
+                                    <a href="~/Doctor/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
+                                    <form asp-action="Delete" asp-controller="Doctor" method="post">
+                                        <input type="hidden" name="id" value="{{i.Id}}" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var doctor in Model)
-                    {
-                        <tr>
-                            <td>
-                                @doctor.Email
-                            </td>
-                            <td>
-                                @if (doctor.Clinic != null)
-                                {
-                                    @doctor.Clinic.Name
-                                }
-                            </td>
-                            <td>
-                                @(doctor.EmailConfirmed ? "Yes" : "No")
-                            </td>
-                            <td>
-                                <a asp-controller="Doctor" asp-action="Edit" asp-route-id="@doctor.Id" class="btn-outline-primary">Edit</a>
-                                <form asp-action="Delete" asp-controller="Doctor" method="post">
-                                    <input type="hidden" name="id" value="@doctor.Id" />
-                                    <button type="submit" class="btn-outline-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-
-                </tbody>
-            </table>
-            <a asp-controller="Doctor" asp-action="Add" class="btn-outline-info">Create</a>
-        </div>
+            </tbody>
+        </table>
     </div>
-@*<ng-view></ng-view>*@
+</div>
 
-<script>
+
+<a asp-controller="Doctor" asp-action="Add" class="btn btn-success">Add <i class="fa fa-plus" aria-hidden="true"></i></a>
+        @*<ng-view></ng-view>*@
+
+        <script>
     var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
 new Newtonsoft.Json.JsonSerializerSettings
 {
