@@ -46,7 +46,7 @@ namespace VirusForecast.Controllers
         //}
 
         // GET: ClinicController/Add
-        public ActionResult Add(string name)
+        public ActionResult Add()
         {
             return View();
         }
@@ -54,11 +54,11 @@ namespace VirusForecast.Controllers
         // POST: ClinicController/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(IFormCollection collection)
+        public ActionResult Add(string name)
         {
             try
             {
-                _repository.Add(collection["Name"]);
+                _repository.Add(name);
                 return RedirectToAction(nameof(List));
             }
             catch
@@ -76,11 +76,11 @@ namespace VirusForecast.Controllers
         // POST: ClinicController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, IFormCollection collection)
+        public ActionResult Edit(string id, string name)
         {
             try
             {
-                _repository.Edit(id, collection["Name"]);
+                _repository.Edit(id, name);
                 return RedirectToAction(nameof(List));
             }
             catch
