@@ -26,21 +26,40 @@
                         </li>
                         @if (this.User.IsInRole(VirusForecast.Models.User.ADMIN_ROLE))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="List">Doctors</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Clinic" asp-action="List">Clinics</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="List">Doctors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Clinic" asp-action="List">Clinics</a>
+                        </li>
                         }
                         @if (this.User.IsInRole(VirusForecast.Models.User.DOCTOR_ROLE))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Virus" asp-action="List">Virus Cases</a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tree"></i>
+                                <p>
+                                    Virus cases
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="Virus" asp-action="List" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="Virus" asp-action="AddFromFile" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add from file</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         }
-
-
 
                         @await Html.PartialAsync("_LoginPartial")
 

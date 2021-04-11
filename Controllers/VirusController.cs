@@ -27,5 +27,11 @@ namespace VirusForecast.Controllers
         {
             return View();
         }
+
+        public IActionResult AddFromFile()
+        {
+            return View();
+        }
+
     }
 }
