@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirusForecast.Data.Interfaces;
 using VirusForecast.Helpers;
+using VirusForecast.Models;
 using VirusForecast.Models.VirusCaseViewModel;
 
 namespace VirusForecast.Controllers
@@ -21,19 +23,23 @@ namespace VirusForecast.Controllers
         private readonly IClinicRepository _clinicRepository;
         private readonly IRegionRepository _regionRepository;
         private readonly IWorkModeRepository _workModeRepository;
+        private readonly UserManager<User> _userManager;
+
 
 
         private readonly ILogger<VirusController> _logger;
 
 
         public VirusController(IVirusCaseRepository virusCaseRepository, IClinicRepository clinicRepository,
-            IRegionRepository regionRepository, IWorkModeRepository workModeRepository, ILogger<VirusController> logger)
+            IRegionRepository regionRepository, IWorkModeRepository workModeRepository, ILogger<VirusController> logger,
+            UserManager<User> userManager)
         {
             _virusCaseRepository = virusCaseRepository;
             _clinicRepository = clinicRepository;
             _regionRepository = regionRepository;
             _workModeRepository = workModeRepository;
             _logger = logger;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -117,10 +123,16 @@ namespace VirusForecast.Controllers
             }
         }
 
-        public ActionResult List()
+        public IActionResult List()
         {
-            return View( new AddFromFileViewModel());
+            return View();
         }
+
+        public IActionResult AddFromFile()
+        {
+            return View(new AddFromFileViewModel());
+        }
+
 
 
         [HttpPost]
@@ -129,9 +141,57 @@ namespace VirusForecast.Controllers
         {
             try
             {
-                VirusCaseMap.ReadCSVFile(model.File.OpenReadStream());
+                var cases = VirusCaseMap.ReadCSVFile(model.File.OpenReadStream());
+
+
+
+                foreach(var item in cases)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    var region = _regionRepository.GetByName(item.Region.Name);
+                    if(region == null)
+                    {
+                        throw new Exception($"Region {item.Region.Name} not exist");
+                    }
+                    else
+                    {
+                        item.RegionId = region.Id;
+                    }
+
+                    var mode = _workModeRepository.GetByName(item.WorkMode.Name);
+
+
+                    if (mode == null)
+                    {
+                        throw new Exception($"Work mode {item.WorkMode.Name} not exist");
+                    }
+                    else
+                    {
+                        item.WorkModeId = mode.Id;
+                    }
+
+                    var user = _userManager.GetUserAsync(User).Result;
+
+                    if (string.IsNullOrEmpty(user.ClinicId))
+                    {
+                        throw new Exception($"Current doctor have no clinic");
+                    }
+                    else
+                    {
+                        item.ClinicId = user.ClinicId;
+                    }
+
+                    _virusCaseRepository.Add(item);
+
+
+                    _logger.LogInformation("Virus case added.");
+
+                }
+
+
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
             }

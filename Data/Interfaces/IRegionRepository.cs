@@ -9,5 +9,6 @@ namespace VirusForecast.Data.Interfaces
     public interface IRegionRepository
     {
         List<Region> GetAll();
+        Region GetByName(string name);
     }
 }

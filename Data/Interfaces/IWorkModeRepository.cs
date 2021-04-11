@@ -9,5 +9,6 @@ namespace VirusForecast.Data.Interfaces
     public interface IWorkModeRepository
     {
         List<WorkMode> GetAll();
+        WorkMode GetByName(string name);
     }
 }

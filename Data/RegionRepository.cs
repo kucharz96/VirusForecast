@@ -20,5 +20,10 @@ namespace VirusForecast.Data
         {
             return _context.Regions.ToList();
         }
+
+        public Region GetByName(string name)
+        {
+            return _context.Regions.Where(i => i.Name == name).FirstOrDefault();
+        }
     }
 }
