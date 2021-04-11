@@ -1,5 +1,28 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model VirusForecast.Models.VirusCaseViewModel.AddFromFileViewModel
+
+
 @{
+    ViewData["Title"] = "Add Doctors";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
+
+@section Title {
+    <h1>Create a new virus cases from file</h1>
+}
+<hr />
+<form enctype="multipart/form-data" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" asp-for="File">
+                    <label class="custom-file-label" for="FileUpload.FormFile">Choose file</label>
+                    <span asp-validation-for="File" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Add cases</button>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </div>
+</form>

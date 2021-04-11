@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -6,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirusForecast.Data.Interfaces;
+using VirusForecast.Helpers;
+using VirusForecast.Models.VirusCaseViewModel;
 
 namespace VirusForecast.Controllers
 {
@@ -30,8 +33,30 @@ namespace VirusForecast.Controllers
 
         public IActionResult AddFromFile()
         {
-            return View();
+            return View( new AddFromFileViewModel());
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddFromFile(AddFromFileViewModel model)
+        {
+            try
+            {
+                VirusCaseMap.ReadCSVFile(model.File.OpenReadStream());
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+
+            return View(new AddFromFileViewModel());
+        }
+
+
+
+ 
 
     }
 }
