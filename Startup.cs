@@ -41,6 +41,8 @@ namespace VirusForecast
 
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IClinicRepository, ClinicRepository>();
+            services.AddScoped<IVirusCaseRepository, VirusCaseRepository>();
+
 
 
 
