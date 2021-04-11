@@ -65,9 +65,21 @@
                                     Clinics
                                 </p>
                             </a>
-                            </li>
-                        }
-                    }      
+                        </li>
+                    }
+                }
+                @if (this.User.IsInRole(VirusForecast.Models.User.DOCTOR_ROLE))
+                {
+                    <li class="nav-item ">
+                        <a asp-controller="Virus" asp-action="List" class="nav-link @Url.MakeActiveClass("home", "privacy")">
+                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                            <p>
+                                Virus Cases
+                            </p>
+                        </a>
+                    </li>
+                }
+                }
             </ul>
         </nav>
     </div>

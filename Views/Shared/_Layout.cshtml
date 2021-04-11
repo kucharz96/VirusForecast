@@ -33,6 +33,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Clinic" asp-action="List">Clinics</a>
                             </li>
                         }
+                        @if (this.User.IsInRole(VirusForecast.Models.User.DOCTOR_ROLE))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Virus" asp-action="List">Virus Cases</a>
+                            </li>
+                        }
 
 
 
