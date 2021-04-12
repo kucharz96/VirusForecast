@@ -10,14 +10,14 @@
     <h1>Create a new virus cases from file</h1>
 }
 <hr />
-<form enctype="multipart/form-data" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+<form enctype="multipart/form-data" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" >
     <div class="row">
         <div class="col-md-6">
 
             <div class="form-group">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" asp-for="File">
-                    <label class="custom-file-label" for="FileUpload.FormFile">Choose file</label>
+                    <input type="file" class="custom-file-input" asp-for="File" id="fileChoice">
+                    <label class="custom-file-label" for="FileUpload.FormFile" id="fileLabel">Choose file</label>
                     <span asp-validation-for="File" class="text-danger"></span>
                 </div>
             </div>
@@ -26,3 +26,26 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     </div>
 </form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+new Newtonsoft.Json.JsonSerializerSettings
+{
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+}) as String);
+
+    $(document).ready(function () {
+        //when input's value changes
+        $("#fileChoice").change(function () {
+            if ($(this).val()) {
+
+                var fileUploaded = document.getElementById("fileChoice");
+                var path = fileUploaded.value;
+                var name = path.substring(path.lastIndexOf("\\") + 1, path.length);
+                var label = document.getElementById("fileLabel");
+                label.innerHTML = name;
+            }
+        });
+    });
+</script>

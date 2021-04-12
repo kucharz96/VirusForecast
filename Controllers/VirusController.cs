@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using VirusForecast.Data.Interfaces;
 using VirusForecast.Helpers;
@@ -48,10 +49,11 @@ namespace VirusForecast.Controllers
 
         public ActionResult Add()
         {
-            var allClinics = _clinicRepository.GetAll()
-                .Select(a => new SelectListItem
-                { Text = a.Name, Value = a.Id.ToString() }
-                ).ToList();
+            var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var allClinics = _clinicRepository.GetDoctorsClinics(doctorId)
+               .Select(a => new SelectListItem
+               { Text = a.Name, Value = a.Id.ToString() }
+               ).ToList();
 
             var allRegions = _regionRepository.GetAll().Select(a => new SelectListItem
             {
@@ -72,7 +74,8 @@ namespace VirusForecast.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Add(AddViewModel model)
         {
-            var allClinics = _clinicRepository.GetAll()
+            var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var allClinics = _clinicRepository.GetDoctorsClinics(doctorId)
                .Select(a => new SelectListItem
                { Text = a.Name, Value = a.Id.ToString() }
                ).ToList();
@@ -125,7 +128,21 @@ namespace VirusForecast.Controllers
 
         public IActionResult List()
         {
-            return View();
+            var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var virusCases = _virusCaseRepository.GetDoctorsVirusCases(doctorId);
+            var list = virusCases.Select(x => new VirusCaseListViewModel()
+            {
+                Age = x.Age,
+                ChildrenAmount = x.ChildrenAmount,
+                ClinicId = _clinicRepository.GetClinicName(x.ClinicId),
+                RegionId = _regionRepository.GetName(x.RegionId),
+                Gender = x.Gender,
+                VirusPositive = x.VirusPositive,
+                WorkModeId = _workModeRepository.GetName(x.WorkModeId)
+            });
+
+
+            return View(list);
         }
 
         public IActionResult AddFromFile()

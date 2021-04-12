@@ -78,5 +78,20 @@ namespace VirusForecast.Data
         {
             return _context.Clinics.Include(clinic => clinic.Users).Include(clinic => clinic.VirusCases).ToList();
         }
+
+        public string GetClinicName(string id)
+        {
+            var clinic = _context.Clinics.FirstOrDefault(x => x.Id.Equals(id)).Name;
+            return clinic;
+        }
+
+        public IEnumerable<Clinic> GetDoctorsClinics(string doctorId)
+        {
+            var doctor = _context.Users.Where(x => x.Id == doctorId).FirstOrDefault();
+            if (doctor != null)
+                return _context.Clinics.Where(x => x.Id == doctor.ClinicId);
+            else
+                return null;
+        }
     }
 }

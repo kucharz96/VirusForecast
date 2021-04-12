@@ -10,5 +10,6 @@ namespace VirusForecast.Data.Interfaces
     {
         List<WorkMode> GetAll();
         WorkMode GetByName(string name);
+        string GetName(string id);
     }
 }

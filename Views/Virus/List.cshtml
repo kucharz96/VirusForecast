@@ -1,0 +1,79 @@
+﻿@model IEnumerable<VirusForecast.Models.VirusCaseViewModel.VirusCaseListViewModel>
+
+    @{
+    ViewData["Title"] = "List of your cases";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+    }
+
+    @section Title{
+        <h1>Your cases</h1>
+    }
+
+    <hr />
+    <table class="table" ng-controller="accountCtrl as vm">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Age)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ChildrenAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VirusPositive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClinicId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegionId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkModeId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="i in vm.model">
+
+            <tr>
+                <td>
+                    {{i.Age}}
+                </td>
+                <td>
+                    {{i.Gender}}
+                </td>
+                <td>
+                    {{i.ChildrenAmount}}
+                </td>
+                <td>
+                    {{i.VirusPositive}}
+                </td>
+                <td>
+                    {{i.ClinicId}}
+                </td>
+                <td>
+                    {{i.RegionId}}
+                </td>
+                <td>
+                    {{i.WorkModeId}}
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <script>
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+new Newtonsoft.Json.JsonSerializerSettings
+{
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+}) as String);
+    </script>

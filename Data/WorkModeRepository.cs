@@ -25,5 +25,10 @@ namespace VirusForecast.Data
         {
             return _context.WorkModes.Where(i => i.Name == name).FirstOrDefault();
         }
+
+        public string GetName(string id)
+        {
+            return _context.WorkModes.Where(i => i.Id == id).FirstOrDefault().Name;
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace VirusForecast.Data.Interfaces
     {
         List<Region> GetAll();
         Region GetByName(string name);
+        string GetName(string id);
     }
 }

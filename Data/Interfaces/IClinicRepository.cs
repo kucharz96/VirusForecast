@@ -48,5 +48,9 @@ namespace VirusForecast.Data.Interfaces
         /// </summary>
         /// <param name="name">Nazwa placówki.</param>
         void Add(string name);
+
+        string GetClinicName(string id);
+
+        IEnumerable<Clinic> GetDoctorsClinics(string doctorId);
     }
 }

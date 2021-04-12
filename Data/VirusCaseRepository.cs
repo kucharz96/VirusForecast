@@ -22,5 +22,20 @@ namespace VirusForecast.Data
             _context.VirusCases.Add(virusCase);
             _context.SaveChanges();
         }
+
+        public IEnumerable<VirusCase> GetDoctorsVirusCases(string doctorId)
+        {
+            var doctor = _context.Users.Where(x => x.Id == doctorId).FirstOrDefault();
+            if (doctor != null)
+                return _context.VirusCases.Where(x => x.ClinicId == doctor.ClinicId);
+            else
+                return null;
+        }
+
+        public string GetClinicName(string id)
+        {
+            var clinic = _context.Clinics.FirstOrDefault(x => x.Id.Equals(id)).Name;
+            return clinic;
+        }
     }
 }

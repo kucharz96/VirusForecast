@@ -1,38 +1,21 @@
-﻿@model VirusForecast.Models.VirusViewModel.AddViewModel
+﻿@model VirusForecast.Models.VirusCaseViewModel.AddViewModel
 
 @{
-    ViewData["Title"] = "Add Virus Case";
+    ViewData["Title"] = "Add new case";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-<h1>View</h1>
+@section Title {
+    <h1>Add new case</h1>
+}
 
-<h4>VirusCase</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input type="radio" value="M" id="Gender" name="Gender" />K<br />
-                <input type="radio" value="F" id="Gender" name="Gender" />M<br />
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ChildrenAmount" class="control-label"></label>
-                <input asp-for="ChildrenAmount" class="form-control" />
-                <span asp-validation-for="ChildrenAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="VirusPositive" /> @Html.DisplayNameFor(model => model.VirusPositive)
-                </label>
-            </div>
+
+<div class="row" ng-controller="virusCtrl">
+
+    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="col-lg-12" >
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-lg-12">
             <div class="form-group">
                 <label asp-for="ClinicId" class="control-label"></label>
                 <select asp-for="ClinicId" class="form-control" asp-items="@Model.Clinics">
@@ -40,14 +23,67 @@
                 </select>
                 <span asp-validation-for="ClinicId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Age" class="control-label"></label>
+                    <input asp-for="Age" ng-model="model.Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="ChildrenAmount" class="control-label"></label>
+                    <input asp-for="ChildrenAmount" ng-model="model.ChildrenAmount" class="form-control" />
+                    <span asp-validation-for="ChildrenAmount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-6">
+                <label asp-for="Gender" class="control-label"></label>
+                <div class="row">
+                    <ul class="gender-pick">
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="M" id="Gender1"  name="Gender" checked="checked" />
+                                <label for="Gender1">Male</label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="F" id="Gender2" name="Gender" />
+                                <label for="Gender2">Female</label>
+                            </div>
+                        </li>
+                    </ul>
+
+
+                </div>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="VirusPositive"></label>
+                <div class="row">
+                    <label class="switch">
+                        <input asp-for="VirusPositive" ng-model="model.VirusPositive" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-6">
                 <label asp-for="RegionId" class="control-label"></label>
                 <select asp-for="RegionId" class="form-control" asp-items="@Model.Regions">
                     <option value="-1" selected disabled hidden>--Please select one--</option>
                 </select>
                 <span asp-validation-for="RegionId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-lg-6">
                 <label asp-for="WorkModeId" class="control-label"></label>
                 <select asp-for="WorkModeId" class="form-control" asp-items="@Model.WorkdModes">
                     <option value="-1" selected disabled hidden>--Please select one--</option>
@@ -57,14 +93,17 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<link rel="stylesheet" href="~/css/customRadioButton.css" />
+
+<script>
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+new Newtonsoft.Json.JsonSerializerSettings
+{
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+}) as String);
+</script>
