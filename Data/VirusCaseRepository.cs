@@ -37,5 +37,12 @@ namespace VirusForecast.Data
             var clinic = _context.Clinics.FirstOrDefault(x => x.Id.Equals(id)).Name;
             return clinic;
         }
+
+        public void Delete(string id)
+        {
+            var virusCase = _context.VirusCases.FirstOrDefault(x => x.Id.Equals(id));
+            _context.Remove(virusCase);
+            _context.SaveChanges();
+        }
     }
 }

@@ -8,6 +8,9 @@ namespace VirusForecast.Models.VirusCaseViewModel
 {
     public class VirusCaseListViewModel
     {
+        [Display(Name = "Id")]
+        public string Id { get; set; }
+
         [Display(Name = "Age")]
         public int Age { get; set; }
 
