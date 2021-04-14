@@ -49,11 +49,10 @@ namespace VirusForecast.Controllers
 
         public ActionResult Add()
         {
-            var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var allClinics = _clinicRepository.GetDoctorsClinics(doctorId)
-               .Select(a => new SelectListItem
-               { Text = a.Name, Value = a.Id.ToString() }
-               ).ToList();
+
+
+ 
+
 
             var allRegions = _regionRepository.GetAll().Select(a => new SelectListItem
             {
@@ -66,19 +65,41 @@ namespace VirusForecast.Controllers
                 Text = a.Name,
                 Value = a.Id.ToString()
             }).ToList();
+            var allClinics = _clinicRepository.GetAll()
+                .Select(a => new SelectListItem
+                { Text = a.Name, Value = a.Id.ToString() }
+                ).ToList();
+            var model = new AddViewModel { Clinics = allClinics, Regions = allRegions, WorkdModes = allWorkModes };
 
-            return View("Add", new AddViewModel { Clinics = allClinics, Regions = allRegions, WorkdModes = allWorkModes });
+            if (User.IsInRole(Models.User.DOCTOR_ROLE))
+            {
+                var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var clinicId = _clinicRepository.GetDoctorsClinics(doctorId).FirstOrDefault().Id;
+
+                model.ClinicId = clinicId;
+               
+            }
+            return View("Add", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add(AddViewModel model)
         {
-            var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var allClinics = _clinicRepository.GetDoctorsClinics(doctorId)
+            var allClinics = _clinicRepository.GetAll()
                .Select(a => new SelectListItem
                { Text = a.Name, Value = a.Id.ToString() }
                ).ToList();
+
+            if (User.IsInRole(Models.User.DOCTOR_ROLE))
+            {
+                var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var clinicId = _clinicRepository.GetDoctorsClinics(doctorId).FirstOrDefault().Id;
+
+                model.ClinicId = clinicId;
+            }
+
 
             var allRegions = _regionRepository.GetAll().Select(a => new SelectListItem
             {
@@ -128,8 +149,17 @@ namespace VirusForecast.Controllers
 
         public IActionResult List()
         {
-            var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var virusCases = _virusCaseRepository.GetDoctorsVirusCases(doctorId);
+            IEnumerable<VirusCase> virusCases;
+            if (User.IsInRole(Models.User.DOCTOR_ROLE))
+            {
+                var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                virusCases = _virusCaseRepository.GetDoctorsVirusCases(doctorId);
+
+            }
+            else
+            {
+                virusCases = _virusCaseRepository.GetAll();
+            }
             var list = virusCases.Select(x => new VirusCaseListViewModel()
             {
                 Id = x.Id,
@@ -148,7 +178,27 @@ namespace VirusForecast.Controllers
 
         public IActionResult AddFromFile()
         {
-            return View(new AddFromFileViewModel());
+            var model = new AddFromFileViewModel();
+
+
+            var allClinics = _clinicRepository.GetAll()
+               .Select(a => new SelectListItem
+               { Text = a.Name, Value = a.Id.ToString() }
+               ).ToList();
+
+            model.Clinics = allClinics;
+            if (User.IsInRole(Models.User.DOCTOR_ROLE))
+            {
+                var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var clinicId =_clinicRepository.GetDoctorsClinics(doctorId).FirstOrDefault().Id;
+
+                model.ClinicId = clinicId;
+            }
+
+
+
+            return View(model);
         }
 
 
@@ -188,16 +238,24 @@ namespace VirusForecast.Controllers
                         item.WorkModeId = mode.Id;
                     }
 
-                    var user = _userManager.GetUserAsync(User).Result;
-
-                    if (string.IsNullOrEmpty(user.ClinicId))
+                    if (User.IsInRole(Models.User.DOCTOR_ROLE))
                     {
-                        throw new Exception($"Current doctor have no clinic");
+                        var user = _userManager.GetUserAsync(User).Result;
+
+                        if (string.IsNullOrEmpty(user.ClinicId))
+                        {
+                            throw new Exception($"Current doctor have no clinic");
+                        }
+                        else
+                        {
+                            item.ClinicId = user.ClinicId;
+                        }
                     }
                     else
                     {
-                        item.ClinicId = user.ClinicId;
+                        item.ClinicId = model.ClinicId;
                     }
+
 
                     item.WorkMode = mode;
                     item.Region = region;
@@ -217,7 +275,9 @@ namespace VirusForecast.Controllers
             }
 
 
-            return View(new AddFromFileViewModel());
+
+
+            return RedirectToAction("AddFromFile");
         }
 
         [HttpPost]

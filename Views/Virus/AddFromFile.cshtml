@@ -13,6 +13,22 @@
 <form enctype="multipart/form-data" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" >
     <div class="row">
         <div class="col-md-6">
+            @if (this.User.IsInRole(VirusForecast.Models.User.ADMIN_ROLE))
+            {
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ClinicId"></label>
+                        <select asp-for="ClinicId" class="form-control" asp-items="@Model.Clinics">
+                            <option value="-1" selected disabled hidden>--Please select one--</option>
+                        </select>
+                        <span asp-validation-for="ClinicId" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <input type="hidden"  asp-for="ClinicId">
+            }
 
             <div class="form-group">
                 <div class="custom-file">

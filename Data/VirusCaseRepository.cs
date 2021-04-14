@@ -44,5 +44,10 @@ namespace VirusForecast.Data
             _context.Remove(virusCase);
             _context.SaveChanges();
         }
+
+        public IEnumerable<VirusCase> GetAll()
+        {
+            return _context.VirusCases;
+        }
     }
 }

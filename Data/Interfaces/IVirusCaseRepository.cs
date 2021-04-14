@@ -11,6 +11,7 @@ namespace VirusForecast.Data.Interfaces
         void Add(VirusCase virusCase);
 
         IEnumerable<VirusCase> GetDoctorsVirusCases(string doctorId);
+        IEnumerable<VirusCase> GetAll();
 
         string GetClinicName(string id);
 
