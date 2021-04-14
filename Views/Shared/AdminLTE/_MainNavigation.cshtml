@@ -68,7 +68,7 @@
                         </li>
                     }
                 }
-                @if (this.User.IsInRole(VirusForecast.Models.User.DOCTOR_ROLE))
+                @if (this.User.IsInRole(VirusForecast.Models.User.DOCTOR_ROLE) || this.User.IsInRole(VirusForecast.Models.User.ADMIN_ROLE))
                 {
                     <li class="nav-item">
                         <a href="#" class="nav-link">

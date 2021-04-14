@@ -117,6 +117,11 @@ namespace VirusForecast.Controllers
             _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
 
         #region Helpers
@@ -128,6 +133,7 @@ namespace VirusForecast.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
+
 
         private IActionResult RedirectToLocal(string returnUrl)
         {

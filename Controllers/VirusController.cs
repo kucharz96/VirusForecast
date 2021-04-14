@@ -16,7 +16,7 @@ using VirusForecast.Models.VirusCaseViewModel;
 
 namespace VirusForecast.Controllers
 {
-    [Authorize(Roles = Models.User.DOCTOR_ROLE)]
+    [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
     public class VirusController : Controller
     {
 
