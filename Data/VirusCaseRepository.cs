@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirusForecast.Data.Interfaces;
 using VirusForecast.Models;
+using VirusForecast.Models.VirusCaseViewModel;
 
 namespace VirusForecast.Data
 {
@@ -43,6 +44,23 @@ namespace VirusForecast.Data
             var virusCase = _context.VirusCases.FirstOrDefault(x => x.Id.Equals(id));
             _context.Remove(virusCase);
             _context.SaveChanges();
+        }
+
+        public VirusCase Get(string id)
+        {
+            return _context.VirusCases.FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        public void Edit(AddViewModel model)
+        {
+            var virusCase = _context.VirusCases.FirstOrDefault(x => x.Id.Equals(model.Id));
+            virusCase.Gender = model.Gender;
+            virusCase.Age = model.Age;
+            virusCase.ChildrenAmount = model.ChildrenAmount;
+            virusCase.RegionId = model.RegionId;
+            virusCase.WorkModeId = model.WorkModeId;
+            virusCase.ClinicId = model.ClinicId;
+            virusCase.VirusPositive = model.VirusPositive;
         }
 
         public IEnumerable<VirusCase> GetAll()

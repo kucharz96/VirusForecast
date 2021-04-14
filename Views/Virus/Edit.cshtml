@@ -1,0 +1,88 @@
+﻿@model VirusForecast.Models.VirusCaseViewModel.AddViewModel
+@{
+    ViewData["Title"] = "Edit case";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@section Title {
+    <h1>Edit case</h1>
+}
+
+<hr />
+
+<div class="row" ng-controller="virusCtrl">
+
+    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="col-lg-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ClinicId"></label>
+            <select asp-for="ClinicId" class="form-control" asp-items="@Model.Clinics">
+                <option value="-1" selected disabled hidden>--Please select one--</option>
+            </select>
+            <span asp-validation-for="ClinicId" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Age"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="ChildrenAmount"></label>
+                    <input asp-for="ChildrenAmount" class="form-control" />
+                    <span asp-validation-for="ChildrenAmount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <label><i>(Manual confirmation)</i></label>
+                <label class="switch">
+                    <input asp-for="Gender" type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="VirusPositive"></label>
+                <label><i>(Manual confirmation)</i></label>
+                <label class="switch">
+                    <input asp-for="VirusPositive" type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="RegionId"></label>
+                <select asp-for="RegionId" class="form-control" asp-items="@Model.Regions">
+                    <option value="-1" selected disabled hidden>--Please select one--</option>
+                </select>
+                <span asp-validation-for="RegionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkModeId"></label>
+                <select asp-for="WorkModeId" class="form-control" asp-items="@Model.WorkdModes">
+                    <option value="-1" selected disabled hidden>--Please select one--</option>
+                </select>
+                <span asp-validation-for="WorkModeId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+</div>
+
+
+<link rel="stylesheet" href="~/css/customRadioButton.css" />
+
+<script>
+    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+new Newtonsoft.Json.JsonSerializerSettings
+{
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+}) as String);
+</script>

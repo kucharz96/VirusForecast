@@ -11,6 +11,10 @@ namespace VirusForecast.Models.VirusCaseViewModel
     public class AddViewModel
     {
         [Required]
+        [Display(Name = "Id")]
+        public string Id { get; set; }
+
+        [Required]
         [Display(Name = "Age")]
         public int Age { get; set; }
 

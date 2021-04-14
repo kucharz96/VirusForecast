@@ -295,7 +295,86 @@ namespace VirusForecast.Controllers
             }
         }
 
+        public ActionResult Edit(string id)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
 
+
+            var allClinics = new List<SelectListItem>();
+            var allRegions = new List<SelectListItem>();
+            var allWorkModes = new List<SelectListItem>();
+
+            if (_userManager.IsInRoleAsync(user, "ADMIN").Result)
+            {
+                allClinics = _clinicRepository.GetAll()
+               .Select(a => new SelectListItem
+               { Text = a.Name, Value = a.Id.ToString() }
+               ).ToList();
+            }
+
+            if (_userManager.IsInRoleAsync(user, "DOCTOR").Result)
+            {
+                allClinics = _clinicRepository.GetDoctorsClinics(user.Id)
+               .Select(a => new SelectListItem
+               { Text = a.Name, Value = a.Id.ToString() }
+               ).ToList();
+            }
+
+            allRegions = _regionRepository.GetAll().Select(a => new SelectListItem
+            {
+                Text = a.Name,
+                Value = a.Id.ToString()
+            }).ToList();
+
+            allWorkModes = _workModeRepository.GetAll().Select(a => new SelectListItem
+            {
+                Text = a.Name,
+                Value = a.Id.ToString()
+            }).ToList();
+
+            var virusCase = _virusCaseRepository.Get(id);
+
+            var model = new AddViewModel
+            {
+                Id = virusCase.Id,
+                Age = virusCase.Age,
+                ChildrenAmount = virusCase.ChildrenAmount,
+                Gender = virusCase.Gender,
+                VirusPositive = virusCase.VirusPositive,
+                ClinicId = virusCase.ClinicId,
+                RegionId = virusCase.RegionId,
+                WorkModeId = virusCase.WorkModeId,
+                Clinics = allClinics,
+                Regions = allRegions,
+                WorkdModes = allWorkModes
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(AddViewModel model)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                     _virusCaseRepository.Edit(model);
+                      return RedirectToAction(nameof(List));
+
+
+                }
+                return View(model);
+
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(model);
+            }
+        }
 
     }
 }
