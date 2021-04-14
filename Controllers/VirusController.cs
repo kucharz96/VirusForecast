@@ -132,6 +132,7 @@ namespace VirusForecast.Controllers
             var virusCases = _virusCaseRepository.GetDoctorsVirusCases(doctorId);
             var list = virusCases.Select(x => new VirusCaseListViewModel()
             {
+                Id = x.Id,
                 Age = x.Age,
                 ChildrenAmount = x.ChildrenAmount,
                 ClinicId = _clinicRepository.GetClinicName(x.ClinicId),
@@ -219,7 +220,20 @@ namespace VirusForecast.Controllers
             return View(new AddFromFileViewModel());
         }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(string id)
+        {
+            try
+            {
+                _virusCaseRepository.Delete(id);
+                return RedirectToAction(nameof(List));
+            }
+            catch
+            {
+                return RedirectToAction(nameof(List));
+            }
+        }
 
 
 

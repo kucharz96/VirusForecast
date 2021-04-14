@@ -9,7 +9,11 @@ namespace VirusForecast.Data.Interfaces
     public interface IVirusCaseRepository
     {
         void Add(VirusCase virusCase);
+
         IEnumerable<VirusCase> GetDoctorsVirusCases(string doctorId);
+
         string GetClinicName(string id);
+
+        void Delete(string id);
     }
 }
