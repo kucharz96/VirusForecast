@@ -45,6 +45,7 @@ namespace VirusForecast
             services.AddScoped<IRegionRepository, RegionRepository>();
             services.AddScoped<IWorkModeRepository, WorkModeRepository>();
 
+            services.AddRazorPages().AddRazorRuntimeCompilation(); 
 
 
 
