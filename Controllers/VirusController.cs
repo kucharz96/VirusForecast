@@ -67,7 +67,7 @@ namespace VirusForecast.Controllers
                 Value = a.Id.ToString()
             }).ToList();
 
-            return View("Add",new AddViewModel { Clinics = allClinics, Regions = allRegions, WorkdModes = allWorkModes });
+            return View("Add", new AddViewModel { Clinics = allClinics, Regions = allRegions, WorkdModes = allWorkModes });
         }
 
         [HttpPost]
@@ -162,11 +162,11 @@ namespace VirusForecast.Controllers
 
 
 
-                foreach(var item in cases)
+                foreach (var item in cases)
                 {
                     item.Id = Guid.NewGuid().ToString();
                     var region = _regionRepository.GetByName(item.Region.Name);
-                    if(region == null)
+                    if (region == null)
                     {
                         throw new Exception($"Region {item.Region.Name} not exist");
                     }
@@ -198,6 +198,8 @@ namespace VirusForecast.Controllers
                         item.ClinicId = user.ClinicId;
                     }
 
+                    item.WorkMode = mode;
+                    item.Region = region;
                     _virusCaseRepository.Add(item);
 
 
@@ -219,7 +221,7 @@ namespace VirusForecast.Controllers
 
 
 
- 
+
 
     }
 }
