@@ -38,40 +38,58 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group">
-                <label asp-for="Gender"></label>
-                <label><i>(Manual confirmation)</i></label>
-                <label class="switch">
-                    <input asp-for="Gender" type="checkbox">
-                    <span class="slider round"></span>
-                </label>
+            <div class="form-group col-6">
+                <label asp-for="Gender" class="control-label"></label>
+                <div class="row">
+                    <ul class="gender-pick">
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="M" id="Gender1" name="Gender" checked="checked" />
+                                <label for="Gender1">Male</label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="F" id="Gender2" name="Gender" />
+                                <label for="Gender2">Female</label>
+                            </div>
+                        </li>
+                    </ul>
+
+
+                </div>
+                <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-lg-6 form-group">
                 <label asp-for="VirusPositive"></label>
-                <label><i>(Manual confirmation)</i></label>
-                <label class="switch">
-                    <input asp-for="VirusPositive" type="checkbox">
-                    <span class="slider round"></span>
-                </label>
+                <div class="row">
+                    <label class="switch">
+                        <input asp-for="VirusPositive" ng-model="model.VirusPositive" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="form-group">
-                <label asp-for="RegionId"></label>
+            <div class="form-group col-lg-6">
+                <label asp-for="RegionId" class="control-label"></label>
                 <select asp-for="RegionId" class="form-control" asp-items="@Model.Regions">
                     <option value="-1" selected disabled hidden>--Please select one--</option>
                 </select>
                 <span asp-validation-for="RegionId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="WorkModeId"></label>
+            <div class="form-group col-lg-6">
+                <label asp-for="WorkModeId" class="control-label"></label>
                 <select asp-for="WorkModeId" class="form-control" asp-items="@Model.WorkdModes">
                     <option value="-1" selected disabled hidden>--Please select one--</option>
                 </select>
                 <span asp-validation-for="WorkModeId" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-success">Save</button>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
         </div>
     </form>
 </div>

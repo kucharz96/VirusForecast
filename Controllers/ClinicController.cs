@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirusForecast.Data;
 using VirusForecast.Data.Interfaces;
+using VirusForecast.Models.ClinicViewModel;
 
 namespace VirusForecast.Controllers
 {
@@ -70,7 +71,13 @@ namespace VirusForecast.Controllers
         // GET: ClinicController/Edit/5
         public ActionResult Edit(string id)
         {
-            return View();
+            var clinic = _repository.Get(id);
+            var model = new AddEditViewModel
+            {
+                Id = clinic.Id,
+                Name = clinic.Name
+            };
+            return View(model);
         }
 
         // POST: ClinicController/Edit/5

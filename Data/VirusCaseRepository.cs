@@ -61,6 +61,7 @@ namespace VirusForecast.Data
             virusCase.WorkModeId = model.WorkModeId;
             virusCase.ClinicId = model.ClinicId;
             virusCase.VirusPositive = model.VirusPositive;
+            _context.SaveChanges();
         }
 
         public IEnumerable<VirusCase> GetAll()

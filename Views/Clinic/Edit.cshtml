@@ -1,4 +1,4 @@
-﻿@model VirusForecast.Models.Clinic
+﻿@model VirusForecast.Models.ClinicViewModel.AddEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,7 +11,8 @@
 <hr />
 
     
-<form asp-action="Edit" method="post">
+<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+    <input type="hidden" asp-for="Id" class="form-control" />
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
