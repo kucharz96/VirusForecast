@@ -9,7 +9,6 @@
     <h1>Clinics</h1>
 }
 
-
 <div class="panel panel-default" ng-controller="clinicCtrl as vm">
     <div class="panel-body">
         <table class="table table-bordered table-hover">
@@ -19,23 +18,35 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody ng-repeat="i in vm.model">
-                    <tr>
-                        <td>
-                            {{i.Name}}
-                        </td>
-                        <td>
-                            <div class="row">
-
-                                <a href="~/Clinic/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
-                                <a href="~/Clinic/Details/{{i.Id}}" class="btn btn-info" style="margin-right:5px;">Details</a>
-                                <form asp-action="Delete" asp-controller="Clinic" method="post">
-                                    <input type="hidden" name="id" value="{{i.Id}}" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+            <tbody>
+                <tr>
+                    <td>
+                        <form class="form-inline" style="margin-bottom: 10px">
+                            <div class="form-group">
+                                <input type="text" ng-model="searchName" class="form-control" placeholder="Name...">
+                                <a style="margin-left: 5px" class="clear" ng-show="searchName!='' && searchName!=null" ng-click="searchName = ''">
+                                    <span class="fa fa-ban"></span>
+                                </a>
                             </div>
-                        </td>
-                    </tr>
+                        </form>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="i in vm.model | filter: {Name: searchName}">
+                    <td>
+                        {{i.Name}}
+                    </td>
+                    <td>
+                        <div class="row">
+                            <a href="~/Clinic/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
+                            <a href="~/Clinic/Details/{{i.Id}}" class="btn btn-info" style="margin-right:5px;">Details</a>
+                            <form asp-action="Delete" asp-controller="Clinic" method="post">
+                                <input type="hidden" name="id" value="{{i.Id}}" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

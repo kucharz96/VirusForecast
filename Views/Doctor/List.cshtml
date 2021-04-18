@@ -21,27 +21,51 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody ng-repeat="i in vm.model">
-                    <tr>
-                        <td>
-                            {{i.Email}}
-                        </td>
-                        <td>
-                            {{i.Clinic.Name}}
-                        </td>
-                        <td>
-                             {{i.EmailConfirmed ? "Yes" : "No"}}
-                        </td>
-                        <td>
-                            <div class="row">
-                                    <a href="~/Doctor/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
-                                    <form asp-action="Delete" asp-controller="Doctor" method="post">
-                                        <input type="hidden" name="id" value="{{i.Id}}" />
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
+            <tbody>
+                <tr>
+                    <td>
+                        <form class="form-inline" style="margin-bottom: 10px">
+                            <div class="form-group">
+                                <input type="text" ng-model="searchEmail" class="form-control" placeholder="Email...">
+                                <a style="margin-left: 5px" class="clear" ng-show="searchEmail!='' && searchEmail!=null" ng-click="searchEmail = ''">
+                                    <span class="fa fa-ban"></span>
+                                </a>
                             </div>
-                        </td>
-                    </tr>
+                        </form>
+                    </td>
+                    <td>
+                        <form class="form-inline" style="margin-bottom: 10px">
+                            <div class="form-group">
+                                <input type="text" ng-model="searchClinic" class="form-control" placeholder="Clinic...">
+                                <a style="margin-left: 5px" class="clear" ng-show="searchClinic!='' && searchClinic!=null" ng-click="searchClinic = ''">
+                                    <span class="fa fa-ban"></span>
+                                </a>
+                            </div>
+                        </form>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="i in vm.model | filter: {Email: searchEmail, Clinic: {Name: searchClinic} }">
+                    <td>
+                        {{i.Email}}
+                    </td>
+                    <td>
+                        {{i.Clinic.Name}}
+                    </td>
+                    <td>
+                        {{i.EmailConfirmed ? "Yes" : "No"}}
+                    </td>
+                    <td>
+                        <div class="row">
+                            <a href="~/Doctor/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
+                            <form asp-action="Delete" asp-controller="Doctor" method="post">
+                                <input type="hidden" name="id" value="{{i.Id}}" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -49,12 +73,12 @@
 
 
 <a asp-controller="Doctor" asp-action="Add" class="btn btn-success">Add <i class="fa fa-plus" aria-hidden="true"></i></a>
-        @*<ng-view></ng-view>*@
+@*<ng-view></ng-view>*@
 
-        <script>
-    var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
+<script>
+var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
 new Newtonsoft.Json.JsonSerializerSettings
 {
-    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 }) as String);
 </script>

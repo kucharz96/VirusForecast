@@ -37,9 +37,81 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody ng-repeat="i in vm.model">
-
+        <tbody>
             <tr>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchAge" class="form-control" placeholder="Age..." style="max-width: 70px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchAge!='' && searchAge!=null" ng-click="searchAge = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchGender" class="form-control" placeholder="Gender..." style="max-width: 90px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchGender!='' && searchGender!=null" ng-click="searchGender = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchChildren" class="form-control" placeholder="Children..." style="max-width: 100px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchChildren!='' && searchChildren!=null" ng-click="searchChildren = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchVirus" class="form-control" placeholder="Virus..." style="max-width: 100px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchVirus!='' && searchVirus!=null" ng-click="searchVirus = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchClinic" class="form-control" placeholder="Clinic..." style="max-width: 150px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchClinic!='' && searchClinic!=null" ng-click="searchClinic = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchRegion" class="form-control" placeholder="Region..." style="max-width: 150px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchRegion!='' && searchRegion!=null" ng-click="searchRegion = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" style="margin-bottom: 10px">
+                        <div class="form-group">
+                            <input type="text" ng-model="searchWork" class="form-control" placeholder="Work..." style="max-width: 150px">
+                            <a style="margin-left: 5px" class="clear" ng-show="searchWork!='' && searchWork!=null" ng-click="searchWork = ''">
+                                <span class="fa fa-ban"></span>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+                <td></td>
+            </tr>
+            <tr ng-repeat="i in vm.model | filter: {Age: searchAge, Gender: searchGender, ChildrenAmount: searchChildren, VirusPositive: searchVirus, ClinicId: searchClinic, RegionId: searchRegion, WorkModeId: searchWork}">
                 <td>
                     {{i.Age}}
                 </td>
