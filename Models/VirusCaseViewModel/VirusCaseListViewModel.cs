@@ -26,6 +26,8 @@ namespace VirusForecast.Models.VirusCaseViewModel
         [Display(Name = "Virus Positive")]
         public bool VirusPositive { get; set; }
 
+        public string VirusPositiveString { get; set; }
+
         [Required]
         [Display(Name = "Clinic")]
         public string ClinicId { get; set; }

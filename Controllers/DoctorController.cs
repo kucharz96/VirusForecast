@@ -36,7 +36,17 @@ namespace VirusForecast.Controllers
         // GET: DoctorController
         public ActionResult List()
         {
-            return View(_doctorRepository.GetAll());
+            IEnumerable<User> doctors = _doctorRepository.GetAll();
+            var list = doctors.Select(x => new DoctorListViewModel()
+            {
+                ClinicId = x.ClinicId,
+                Clinic = x.Clinic,
+                Email = x.Email,
+                EmailConfirmed = x.EmailConfirmed,
+                EmailConfirmedString = x.EmailConfirmed ? "Yes" : "No",
+                Id = x.Id
+            }); 
+            return View(list);
         }
 
 

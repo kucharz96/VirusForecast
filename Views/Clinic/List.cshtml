@@ -10,11 +10,19 @@
 }
 
 <div class="panel panel-default" ng-controller="clinicCtrl as vm">
+    <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
+    <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
     <div class="panel-body">
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>
+                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Name'; reverse = !reverse">
+                            Name
+                            <span class="fa fa-sort-up" ng-show="sortKey=='Name'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
+                            
+                        </a>
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,7 +40,7 @@
                     </td>
                     <td><button class="btn btn-outline-primary" ng-click="searchName = ''">Clear search</button></td>
                 </tr>
-                <tr ng-repeat="i in vm.model | filter: {Name: searchName}">
+                <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Name: searchName}">
                     <td>
                         {{i.Name}}
                     </td>

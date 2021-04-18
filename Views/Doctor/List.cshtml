@@ -1,4 +1,4 @@
-﻿@model IEnumerable<User>
+﻿@model IEnumerable<VirusForecast.Models.DoctorViewModel.DoctorListViewModel>
 
 @{
     ViewData["Title"] = "Doctors";
@@ -11,13 +11,30 @@
 
 
 <div class="panel panel-default" ng-controller="accountCtrl as vm">
+    <p ng-model="sortKey">Sort key: {{sortKey}}</p>
+    <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
     <div class="panel-body">
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Clinic</th>
-                    <th>Is email confirmed?</th>
+                    <th>
+                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Email'; reverse = !reverse">
+                            Email
+                            <span class="fa fa-sort-up" ng-show="sortKey=='Email'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Clinic'; reverse = !reverse">
+                            Clinic
+                            <span class="fa fa-sort-up" ng-show="sortKey=='Clinic'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='EmailConfirmedString'; reverse = !reverse">
+                            Is email confirmed?
+                            <span class="fa fa-sort-up" ng-show="sortKey=='EmailConfirmedString'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
+                        </a>
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -43,10 +60,19 @@
                             </div>
                         </form>
                     </td>
-                    <td></td>
-                    <td><button class="btn btn-outline-primary" ng-click="searchEmail=''; searchClinic=''">Clear search</button></td>
+                    <td>
+                        <form class="form-inline" style="margin-bottom: 10px">
+                            <div class="form-group">
+                                <input type="text" ng-model="searchEmailConfirmed" class="form-control" placeholder="Confirmed...">
+                                <a style="margin-left: 5px" class="clear" ng-show="searchEmailConfirmed!='' && searchEmailConfirmed!=null" ng-click="searchEmailConfirmed = ''">
+                                    <span class="fa fa-ban"></span>
+                                </a>
+                            </div>
+                        </form>
+                    </td>
+                    <td><button class="btn btn-outline-primary" ng-click="searchEmail=''; searchClinic=''; searchEmailConfirmed=''">Clear search</button></td>
                 </tr>
-                <tr ng-repeat="i in vm.model | filter: {Email: searchEmail, Clinic: {Name: searchClinic} }">
+                <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Email: searchEmail, Clinic: {Name: searchClinic}, EmailConfirmedString: searchEmailConfirmed }">
                     <td>
                         {{i.Email}}
                     </td>
@@ -54,7 +80,7 @@
                         {{i.Clinic.Name}}
                     </td>
                     <td>
-                        {{i.EmailConfirmed ? "Yes" : "No"}}
+                        {{i.EmailConfirmedString}}
                     </td>
                     <td>
                         <div class="row">

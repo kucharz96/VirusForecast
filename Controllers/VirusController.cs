@@ -169,6 +169,7 @@ namespace VirusForecast.Controllers
                 RegionId = _regionRepository.GetName(x.RegionId),
                 Gender = x.Gender,
                 VirusPositive = x.VirusPositive,
+                VirusPositiveString = x.VirusPositive ? "Yes" : "No",
                 WorkModeId = _workModeRepository.GetName(x.WorkModeId)
             });
 
@@ -263,10 +264,9 @@ namespace VirusForecast.Controllers
 
 
                     _logger.LogInformation("Virus case added.");
-
+                    
                 }
-
-
+                return RedirectToAction(nameof(List));
 
             }
             catch (Exception ex)
