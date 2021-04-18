@@ -109,7 +109,7 @@
                         </div>
                     </form>
                 </td>
-                <td></td>
+                <td><button class="btn btn-outline-primary" ng-click="searchAge = ''; searchGender=''; searchChildren=''; searchVirus=''; searchClinic=''; searchRegion=''; searchWork=''">Clear search</button></td>
             </tr>
             <tr ng-repeat="i in vm.model | filter: {Age: searchAge, Gender: searchGender, ChildrenAmount: searchChildren, VirusPositive: searchVirus, ClinicId: searchClinic, RegionId: searchRegion, WorkModeId: searchWork}">
                 <td>

@@ -44,7 +44,7 @@
                         </form>
                     </td>
                     <td></td>
-                    <td></td>
+                    <td><button class="btn btn-outline-primary" ng-click="searchEmail=''; searchClinic=''">Clear search</button></td>
                 </tr>
                 <tr ng-repeat="i in vm.model | filter: {Email: searchEmail, Clinic: {Name: searchClinic} }">
                     <td>
