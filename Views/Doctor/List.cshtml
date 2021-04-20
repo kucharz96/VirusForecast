@@ -14,7 +14,7 @@
     <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
     <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
     <div class="panel-body">
-        <table class="table table-bordered table-hover">
+        <table id="doctorsTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>
@@ -35,10 +35,8 @@
                             <span class="fa fa-sort-up" ng-show="sortKey=='EmailConfirmedString'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
                         </a>
                     </th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
-            </thead>
-            <tbody>
                 <tr>
                     <td>
                         <form class="form-inline" style="margin-bottom: 10px">
@@ -72,6 +70,8 @@
                     </td>
                     <td><button class="btn btn-outline-primary" ng-click="searchEmail=''; searchClinic=''; searchEmailConfirmed=''">Clear search</button></td>
                 </tr>
+            </thead>
+            <tbody>
                 <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Email: searchEmail, Clinic: {Name: searchClinic}, EmailConfirmedString: searchEmailConfirmed }">
                     <td>
                         {{i.Email}}

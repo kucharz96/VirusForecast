@@ -10,11 +10,11 @@
 }
 
 <hr />
-<div class="panel panel-default" ng-controller="accountCtrl as vm">
+<div class="panel panel-default" ng-controller="virusCtrl as vm">
     <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
     <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
     <div class="panel-body">
-        <table class="table table-bordered table-hover">
+        <table id="virusCasesTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>
@@ -23,7 +23,7 @@
                             <span class="fa fa-sort-up" ng-show="sortKey=='Age'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
                         </a>
                     </th>
-                    <th>   
+                    <th>
                         <a style="margin-left: 5px" class="clear" ng-click="sortKey='Gender'; reverse = !reverse">
                             @Html.DisplayNameFor(model => model.Gender)
                             <span class="fa fa-sort-up" ng-show="sortKey=='Gender'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
@@ -59,16 +59,14 @@
                             <span class="fa fa-sort-up" ng-show="sortKey=='WorkModeId'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
                         </a>
                     </th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
-            </thead>
-            <tbody>
                 <tr>
                     <td>
                         <form class="form-inline" style="margin-bottom: 10px">
                             <div class="form-group">
                                 <input type="text" ng-model="searchAge" class="form-control" placeholder="Age..." style="max-width: 70px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchAge!='' && searchAge!=null" ng-click="searchAge = ''">
+                                <a style="margin-left: 5px" class="clear" ng-show="searchAge!='' && searchAge!=null" ng-click="searchAge = ''; vm.redrawTable()">
                                     <span class="fa fa-ban"></span>
                                 </a>
                             </div>
@@ -136,6 +134,8 @@
                     </td>
                     <td><button class="btn btn-outline-primary" ng-click="searchAge = ''; searchGender=''; searchChildren=''; searchVirus=''; searchClinic=''; searchRegion=''; searchWork=''">Clear search</button></td>
                 </tr>
+            </thead>
+            <tbody>
                 <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Age: searchAge, Gender: searchGender, ChildrenAmount: searchChildren, VirusPositiveString: searchVirus, ClinicId: searchClinic, RegionId: searchRegion, WorkModeId: searchWork}">
                     <td>
                         {{i.Age}}

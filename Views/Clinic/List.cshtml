@@ -9,63 +9,65 @@
     <h1>Clinics</h1>
 }
 
-<div class="panel panel-default" ng-controller="clinicCtrl as vm">
-    <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
-    <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
-    <div class="panel-body">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Name'; reverse = !reverse">
-                            Name
-                            <span class="fa fa-sort-up" ng-show="sortKey=='Name'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                            
-                        </a>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchName" class="form-control" placeholder="Name...">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchName!='' && searchName!=null" ng-click="searchName = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td><button class="btn btn-outline-primary" ng-click="searchName = ''">Clear search</button></td>
-                </tr>
-                <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Name: searchName}">
-                    <td>
-                        {{i.Name}}
-                    </td>
-                    <td>
-                        <div class="row">
-                            <a href="~/Clinic/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
-                            <a href="~/Clinic/Details/{{i.Id}}" class="btn btn-info" style="margin-right:5px;">Details</a>
-                            <form asp-action="Delete" asp-controller="Clinic" method="post">
-                                <input type="hidden" name="id" value="{{i.Id}}" />
-                                <button type="submit" class="btn btn-danger">Delete</button>
+
+    <div class="panel panel-default" ng-controller="clinicCtrl as vm">
+        <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
+        <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
+        <div class="panel-body">
+            <table id="clinicsTable" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <a style="margin-left: 5px" class="clear" ng-click="sortKey='Name'; reverse = !reverse">
+                                Name
+                                <span class="fa fa-sort-up" ng-show="sortKey=='Name'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
+                            </a>  
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form class="form-inline" style="margin-bottom: 10px">
+                                <div class="form-group">
+                                    <input type="text" ng-model="searchName" class="form-control" placeholder="Name...">
+                                    <a style="margin-left: 5px" class="clear" ng-show="searchName!='' && searchName!=null" ng-click="searchName = ''">
+                                        <span class="fa fa-ban"></span>
+                                    </a>
+                                </div>
                             </form>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                        <td><button class="btn btn-outline-primary" ng-click="searchName = ''">Clear search</button></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Name: searchName}">
+                        <td>
+                            {{i.Name}}
+                        </td>
+                        <td>
+                            <div class="row">
+                                <a href="~/Clinic/Edit/{{i.Id}}" class="btn btn-primary" style="margin-right:5px;">Edit</a>
+                                <a href="~/Clinic/Details/{{i.Id}}" class="btn btn-info" style="margin-right:5px;">Details</a>
+                                <form asp-action="Delete" asp-controller="Clinic" method="post">
+                                    <input type="hidden" name="id" value="{{i.Id}}" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<a asp-controller="Clinic" asp-action="Add" class="btn btn-success">Add <i class="fa fa-plus" aria-hidden="true"></i></a>
+    <a asp-controller="Clinic" asp-action="Add" class="btn btn-success">Add <i class="fa fa-plus" aria-hidden="true"></i></a>
 
-<script>
+    <script>
     var MvcModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented,
 new Newtonsoft.Json.JsonSerializerSettings
 {
     ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 }) as String);
-</script>
+    </script>
+
+    
