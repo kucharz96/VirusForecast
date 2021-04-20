@@ -44,7 +44,7 @@
                 "paging": true,
                 "info": true, 
                 "searching": true, 
-                "ordering": false,
+                "ordering": true,
                 "buttons": [{
                     extend: "copy",
                     exportOptions: {
