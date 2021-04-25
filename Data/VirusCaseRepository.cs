@@ -72,14 +72,94 @@ namespace VirusForecast.Data
         public List<CaseStatisic> GetRealCases(CaseStatisticFilters filters)
         {
 
-            throw new NotImplementedException();
+            var cases = _context.VirusCases.Where(i=>i.VirusPositive == true);
+            if (filters.DateFrom.HasValue)
+            {
+                cases.Where(i => i.Date >= filters.DateFrom);
+            }
+            if (filters.DateTo.HasValue)
+            {
+                if (filters.DateTo > DateTime.Now.Date)
+                {
+                    cases.Where(i => i.Date <= DateTime.Now.Date);
+                }
+                else
+                {
+                    cases.Where(i => i.Date <= filters.DateTo);
+                }
+            }
+
+
+            var statisics = cases.GroupBy(i => i.Date)
+                .Select(y => new CaseStatisic
+                {
+                    CasesCount = y.Count(),
+                    Date = y.Key
+
+                })
+                .OrderBy(i=>i.Date)
+                .ToList();
+
+
+
+
+            return statisics;
 
 
         }
 
         public List<CaseStatisic> GetForecastCases(CaseStatisticFilters filters)
         {
-            throw new NotImplementedException();
+            if(filters.DateTo.HasValue && filters.DateTo <= DateTime.Now.Date)
+            {
+                return new List<CaseStatisic>();
+            }
+            else
+            {
+                DateTime generateDateFrom;
+                DateTime generateDateTo;
+
+
+                if(!filters.DateFrom.HasValue || filters.DateFrom <= DateTime.Now.Date)
+                {
+                    generateDateFrom = DateTime.Now.Date.AddDays(1);
+                }
+                else
+                {
+                    generateDateFrom = filters.DateFrom.Value;
+                }
+
+                if (!filters.DateTo.HasValue)
+                {
+                    generateDateTo = DateTime.Now.Date.AddDays(8);
+                }
+                else
+                {
+                    generateDateTo = filters.DateFrom.Value;
+                }
+
+                var statistic = new List<CaseStatisic>();
+
+                for(var startDate = generateDateFrom; startDate < generateDateTo; startDate = startDate.AddDays(1))
+                {
+                    Random rnd = new Random();
+                    int caseNumber = rnd.Next(11);
+                    statistic.Add(new CaseStatisic
+                    {
+                        CasesCount = caseNumber,
+                        Date = startDate
+                    });
+
+
+                }
+
+                return statistic;
+
+
+
+            }
+
+
         }
     }
 }

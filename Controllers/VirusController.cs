@@ -383,7 +383,7 @@ namespace VirusForecast.Controllers
         }
 
         [AllowAnonymous]
-        public JsonResult GetCasesStatisics(CaseStatisticFilters filters)
+        public JsonResult GetCasesStatistics(CaseStatisticFilters filters)
         {
             var realCases = _virusCaseRepository.GetRealCases(filters);
             var forecastCases = _virusCaseRepository.GetForecastCases(filters);
