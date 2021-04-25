@@ -21,5 +21,11 @@ namespace VirusForecast.Data.Interfaces
         VirusCase Get(string id);
 
         void Edit(AddViewModel model);
+
+        List<CaseStatisic> GetRealCases(CaseStatisticFilters filters);
+        List<CaseStatisic> GetForecastCases(CaseStatisticFilters filters);
+
+
+
     }
 }

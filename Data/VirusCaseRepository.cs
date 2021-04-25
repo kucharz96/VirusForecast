@@ -68,5 +68,18 @@ namespace VirusForecast.Data
         {
             return _context.VirusCases;
         }
+
+        public List<CaseStatisic> GetRealCases(CaseStatisticFilters filters)
+        {
+
+            throw new NotImplementedException();
+
+
+        }
+
+        public List<CaseStatisic> GetForecastCases(CaseStatisticFilters filters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

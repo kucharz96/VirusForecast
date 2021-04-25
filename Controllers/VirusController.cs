@@ -16,7 +16,7 @@ using VirusForecast.Models.VirusCaseViewModel;
 
 namespace VirusForecast.Controllers
 {
-    [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
+
     public class VirusController : Controller
     {
 
@@ -42,11 +42,13 @@ namespace VirusForecast.Controllers
             _logger = logger;
             _userManager = userManager;
         }
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public ActionResult Add()
         {
 
@@ -85,6 +87,7 @@ namespace VirusForecast.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public IActionResult Add(AddViewModel model)
         {
             var allClinics = _clinicRepository.GetAll()
@@ -147,6 +150,7 @@ namespace VirusForecast.Controllers
             }
         }
 
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public IActionResult List()
         {
             IEnumerable<VirusCase> virusCases;
@@ -177,6 +181,7 @@ namespace VirusForecast.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public IActionResult AddFromFile()
         {
             var model = new AddFromFileViewModel();
@@ -206,6 +211,7 @@ namespace VirusForecast.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public IActionResult AddFromFile(AddFromFileViewModel model)
         {
             try
@@ -282,6 +288,7 @@ namespace VirusForecast.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public ActionResult Delete(string id)
         {
             try
@@ -295,6 +302,7 @@ namespace VirusForecast.Controllers
             }
         }
 
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public ActionResult Edit(string id)
         {
             var user = _userManager.GetUserAsync(User).Result;
@@ -353,6 +361,7 @@ namespace VirusForecast.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public ActionResult Edit(AddViewModel model)
         {
             try
@@ -374,6 +383,20 @@ namespace VirusForecast.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
+        }
+
+        [AllowAnonymous]
+        public JsonResult GetCasesStatisics(CaseStatisticFilters filters)
+        {
+            var realCases = _virusCaseRepository.GetRealCases(filters);
+            var forecastCases = _virusCaseRepository.GetForecastCases(filters);
+            var totalCases = new TotalCaseStatisic
+            {
+                RealCases = realCases,
+                ForecastCases = forecastCases
+            };
+
+            return Json(totalCases);
         }
 
     }
