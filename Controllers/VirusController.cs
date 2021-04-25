@@ -51,11 +51,6 @@ namespace VirusForecast.Controllers
         [Authorize(Roles = Models.User.DOCTOR_ROLE + "," + Models.User.ADMIN_ROLE)]
         public ActionResult Add()
         {
-
-
- 
-
-
             var allRegions = _regionRepository.GetAll().Select(a => new SelectListItem
             {
                 Text = a.Name,
@@ -80,7 +75,7 @@ namespace VirusForecast.Controllers
                 var clinicId = _clinicRepository.GetDoctorsClinics(doctorId).FirstOrDefault().Id;
 
                 model.ClinicId = clinicId;
-               
+
             }
             return View("Add", model);
         }
@@ -128,6 +123,7 @@ namespace VirusForecast.Controllers
                         Gender = model.Gender,
                         ChildrenAmount = model.ChildrenAmount,
                         VirusPositive = model.VirusPositive,
+                        Date = model.Date,
                         ClinicId = model.ClinicId,
                         RegionId = model.RegionId,
                         WorkModeId = model.WorkModeId
@@ -172,6 +168,7 @@ namespace VirusForecast.Controllers
                 ClinicId = _clinicRepository.GetClinicName(x.ClinicId),
                 RegionId = _regionRepository.GetName(x.RegionId),
                 Gender = x.Gender,
+                Date = x.Date,
                 VirusPositive = x.VirusPositive,
                 VirusPositiveString = x.VirusPositive ? "Yes" : "No",
                 WorkModeId = _workModeRepository.GetName(x.WorkModeId)
@@ -197,7 +194,7 @@ namespace VirusForecast.Controllers
             {
                 var doctorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                var clinicId =_clinicRepository.GetDoctorsClinics(doctorId).FirstOrDefault().Id;
+                var clinicId = _clinicRepository.GetDoctorsClinics(doctorId).FirstOrDefault().Id;
 
                 model.ClinicId = clinicId;
             }
@@ -263,14 +260,13 @@ namespace VirusForecast.Controllers
                         item.ClinicId = model.ClinicId;
                     }
 
-
                     item.WorkMode = mode;
                     item.Region = region;
                     _virusCaseRepository.Add(item);
 
 
                     _logger.LogInformation("Virus case added.");
-                    
+
                 }
                 return RedirectToAction(nameof(List));
 
@@ -349,6 +345,7 @@ namespace VirusForecast.Controllers
                 ChildrenAmount = virusCase.ChildrenAmount,
                 Gender = virusCase.Gender,
                 VirusPositive = virusCase.VirusPositive,
+                Date = virusCase.Date,
                 ClinicId = virusCase.ClinicId,
                 RegionId = virusCase.RegionId,
                 WorkModeId = virusCase.WorkModeId,
@@ -369,8 +366,8 @@ namespace VirusForecast.Controllers
 
                 if (ModelState.IsValid)
                 {
-                     _virusCaseRepository.Edit(model);
-                      return RedirectToAction(nameof(List));
+                    _virusCaseRepository.Edit(model);
+                    return RedirectToAction(nameof(List));
 
 
                 }

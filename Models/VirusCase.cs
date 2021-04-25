@@ -14,6 +14,7 @@ namespace VirusForecast.Models
         public char Gender { get; set; }
         public int ChildrenAmount { get; set; }
         public bool VirusPositive { get; set; }
+        public DateTime Date { get; set; }
         public string ClinicId { get; set; }
         public string RegionId { get; set; }
         public string WorkModeId { get; set; }
