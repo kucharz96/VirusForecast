@@ -19,7 +19,7 @@ namespace VirusForecast.Helpers
             Map(x => x.ChildrenAmount).Name("ChildrenAmount");
             Map(x => x.Gender).Name("Gender");
             Map(x => x.VirusPositive).Name("VirusPositive");
-
+            Map(x=>x.Date).Name("Date");
         }
 
         public static List<VirusCase> ReadCSVFile(Stream stream)

@@ -49,11 +49,6 @@ namespace VirusForecast.Controllers
 
         public ActionResult Add()
         {
-
-
-
-
-
             var allRegions = _regionRepository.GetAll().Select(a => new SelectListItem
             {
                 Text = a.Name,
@@ -125,6 +120,7 @@ namespace VirusForecast.Controllers
                         Gender = model.Gender,
                         ChildrenAmount = model.ChildrenAmount,
                         VirusPositive = model.VirusPositive,
+                        Date = model.Date,
                         ClinicId = model.ClinicId,
                         RegionId = model.RegionId,
                         WorkModeId = model.WorkModeId
@@ -258,7 +254,6 @@ namespace VirusForecast.Controllers
                         item.ClinicId = model.ClinicId;
                     }
 
-
                     item.WorkMode = mode;
                     item.Region = region;
                     _virusCaseRepository.Add(item);
@@ -342,6 +337,7 @@ namespace VirusForecast.Controllers
                 ChildrenAmount = virusCase.ChildrenAmount,
                 Gender = virusCase.Gender,
                 VirusPositive = virusCase.VirusPositive,
+                Date = virusCase.Date,
                 ClinicId = virusCase.ClinicId,
                 RegionId = virusCase.RegionId,
                 WorkModeId = virusCase.WorkModeId,
