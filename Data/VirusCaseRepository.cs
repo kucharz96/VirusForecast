@@ -140,7 +140,7 @@ namespace VirusForecast.Data
 
                 var statistic = new List<CaseStatisic>();
 
-                for(var startDate = generateDateFrom; startDate < generateDateTo; startDate = startDate.AddDays(1))
+                for(var startDate = generateDateFrom; startDate <= generateDateTo; startDate = startDate.AddDays(1))
                 {
                     Random rnd = new Random();
                     int caseNumber = rnd.Next(11);
