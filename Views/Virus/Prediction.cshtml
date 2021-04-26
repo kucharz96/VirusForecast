@@ -1,0 +1,214 @@
+﻿@model Microsoft.AspNetCore.Mvc.JsonResult
+
+@{
+    ViewData["Title"] = "Prediction";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@section Title {
+    <h1>Prediction panel</h1>
+}
+
+@Model
+<div class="row">
+    <div class="col-md-6">
+        <!-- LINE CHART -->
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Real Cases</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="realCasesChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-md-6">
+        <!-- LINE CHART -->
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Forecast Cases</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="forecastCasesChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">From</label>
+                <input type="date" class="form-control" id="dateFrom" onchange="predict();"/>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">To</label>
+                <input type="date" class="form-control" id="dateTo" onchange="predict();"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.card -->
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="~/plugins/chart.js/Chart.min.js"></script>
+<!-- AdminLTE App -->
+<!--<script src="~/dist/js/adminlte.min.js"></script>-->
+<!-- AdminLTE for demo purposes -->
+<!--<script src="~/dist/js/demo.js"></script>-->
+<!-- Page specific script -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        getResults();
+        // Get context with jQuery - using jQuery's .get() method.
+    });
+    function getResults(from = null, to = null) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCasesStatistics", "Virus")',
+                data: { dateFrom: from, dateTo: to },
+                success: function (data) {
+
+                    datesRealCases = [];
+                    realCases = [];
+                    datesForecastCases = [];
+                    forecastCases = [];
+
+                    for (var i = 0; i < data.realCases.length; i++) {
+                        datesRealCases.push(new Date(data.realCases[i].date).toLocaleDateString("en-US"));
+                        realCases.push(data.realCases[i].casesCount);
+                    }
+
+                    for (var i = 0; i < data.forecastCases.length; i++) {
+                        datesForecastCases.push(new Date(data.forecastCases[i].date).toLocaleDateString("en-US"));
+                        forecastCases.push(data.forecastCases[i].casesCount);
+                    }
+
+                    var areaChartData = {
+                        labels: datesRealCases,
+                        datasets: [
+                            {
+                                label: 'Real cases',
+                                backgroundColor: 'rgba(60,141,188,0.9)',
+                                borderColor: 'rgba(60,141,188,0.8)',
+                                pointRadius: false,
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                data: realCases
+                            }
+                        ]
+                    }
+
+
+                    var areaChartDataForecast = {
+                        labels: datesForecastCases,
+                        datasets: [
+                            {
+                                label: 'Forecast cases',
+                                backgroundColor: 'rgba(210, 214, 222, 1)',
+                                borderColor: 'rgba(210, 214, 222, 1)',
+                                pointRadius: false,
+                                pointColor: 'rgba(210, 214, 222, 1)',
+                                pointStrokeColor: '#c1c7d1',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(220,220,220,1)',
+                                data: forecastCases
+                            },
+                        ]
+                    }
+
+                    var areaChartOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    display: false,
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    display: false,
+                                }
+                            }]
+                        }
+                    }
+
+
+
+                    var lineChartCanvas = $('#realCasesChart').get(0).getContext('2d')
+                    var lineChartOptions = $.extend(true, {}, areaChartOptions)
+                    var lineChartData = $.extend(true, {}, areaChartData)
+                    lineChartData.datasets[0].fill = false;
+                    lineChartOptions.datasetFill = false
+
+                    var lineChart = new Chart(lineChartCanvas, {
+                        type: 'line',
+                        data: lineChartData,
+                        options: lineChartOptions
+                    })
+
+
+                    var lineChartCanvasForecast = $('#forecastCasesChart').get(0).getContext('2d')
+                    var lineChartOptionsForecast = $.extend(true, {}, areaChartOptions)
+                    var lineChartDataForecast = $.extend(true, {}, areaChartDataForecast)
+                    lineChartDataForecast.datasets[0].fill = false;
+                    lineChartOptionsForecast.datasetFill = false;
+
+                    var lineChartForecast = new Chart(lineChartCanvasForecast, {
+                        type: 'line',
+                        data: lineChartDataForecast,
+                        options: lineChartOptionsForecast
+                    })
+
+
+                },
+                error: function (request, status, error) {
+                }
+            });
+        }
+
+    function predict() {
+        
+        var from = new Date($('#dateFrom').val());
+        var to = new Date($('#dateTo').val());
+        if (isValidDate(from) && isValidDate(to)) {
+            getResults($('#dateFrom').val(), $('#dateTo').val());
+        }
+        
+    }
+
+    function isValidDate(d) {
+        return d instanceof Date && !isNaN(d);
+    }
+</script>
+

@@ -383,8 +383,18 @@ namespace VirusForecast.Controllers
         }
 
         [AllowAnonymous]
-        public JsonResult GetCasesStatistics(CaseStatisticFilters filters)
+        public JsonResult GetCasesStatistics(string dateFrom, string dateTo)
         {
+            CaseStatisticFilters filters = new CaseStatisticFilters();
+            try
+            {
+                filters.DateFrom = DateTime.Parse(dateFrom);
+                filters.DateTo = DateTime.Parse(dateTo);
+            }
+            catch (Exception)
+            {
+
+            }
             var realCases = _virusCaseRepository.GetRealCases(filters);
             var forecastCases = _virusCaseRepository.GetForecastCases(filters);
             var totalCases = new TotalCaseStatisic
@@ -396,5 +406,10 @@ namespace VirusForecast.Controllers
             return Json(totalCases);
         }
 
+        [AllowAnonymous]
+        public ActionResult Prediction()
+        {
+            return View();
+        }
     }
 }
