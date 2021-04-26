@@ -75,17 +75,17 @@ namespace VirusForecast.Data
             var cases = _context.VirusCases.Where(i=>i.VirusPositive == true);
             if (filters.DateFrom.HasValue)
             {
-                cases.Where(i => i.Date >= filters.DateFrom);
+                cases = cases.Where(i => i.Date >= filters.DateFrom);
             }
             if (filters.DateTo.HasValue)
             {
                 if (filters.DateTo > DateTime.Now.Date)
                 {
-                    cases.Where(i => i.Date <= DateTime.Now.Date);
+                    cases = cases.Where(i => i.Date <= DateTime.Now.Date);
                 }
                 else
                 {
-                    cases.Where(i => i.Date <= filters.DateTo);
+                    cases = cases.Where(i => i.Date <= filters.DateTo);
                 }
             }
 
@@ -140,7 +140,7 @@ namespace VirusForecast.Data
 
                 var statistic = new List<CaseStatisic>();
 
-                for(var startDate = generateDateFrom; startDate < generateDateTo; startDate = startDate.AddDays(1))
+                for(var startDate = generateDateFrom; startDate <= generateDateTo; startDate = startDate.AddDays(1))
                 {
                     Random rnd = new Random();
                     int caseNumber = rnd.Next(11);
