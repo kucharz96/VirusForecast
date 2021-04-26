@@ -395,8 +395,10 @@ namespace VirusForecast.Controllers
             {
 
             }
+
             var realCases = _virusCaseRepository.GetRealCases(filters);
             var forecastCases = _virusCaseRepository.GetForecastCases(filters);
+
             var totalCases = new TotalCaseStatisic
             {
                 RealCases = realCases,
