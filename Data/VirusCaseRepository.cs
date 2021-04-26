@@ -102,7 +102,7 @@ namespace VirusForecast.Data
 
             List<CaseStatisic> caseStatisics = new List<CaseStatisic>();
            
-            if (statisics.Count() > 0) {
+            //if (statisics.Count() > 0) {
 
                 DateTime dateFrom, dateTo;
 
@@ -114,13 +114,20 @@ namespace VirusForecast.Data
                 {
                     dateFrom = filters.DateFrom.Value;
                 }
+
+
                 if (!filters.DateTo.HasValue)
                 {
-                    dateTo = statisics.Last().Date;
+                    dateTo = DateTime.Now.Date;
+
                 }
-                else
+                else if(filters.DateTo.Value > DateTime.Now.Date)
                 {
-                    dateTo = filters.DateTo.Value;
+                    dateTo = DateTime.Now.Date;
+                }
+                else 
+                {
+                    dateTo = filters.DateTo.Value;  
                 }
 
                 for (var startDate = dateFrom; startDate <= dateTo; startDate = startDate.AddDays(1))
@@ -135,7 +142,7 @@ namespace VirusForecast.Data
                         caseStatisics.Add(statObject);
                     }
                 }
-            }
+            //}
             
             return caseStatisics;
 
