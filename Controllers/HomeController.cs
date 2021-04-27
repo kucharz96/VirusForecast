@@ -24,8 +24,7 @@ namespace VirusForecast.Controllers
 
         public IActionResult Index()
         {
-            var accounts = _doctorRepository.GetAll();
-            return View(accounts);
+            return View();
         }
 
         public IActionResult Privacy()

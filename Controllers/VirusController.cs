@@ -408,10 +408,5 @@ namespace VirusForecast.Controllers
             return Json(totalCases);
         }
 
-        [AllowAnonymous]
-        public ActionResult Prediction()
-        {
-            return View();
-        }
     }
 }
