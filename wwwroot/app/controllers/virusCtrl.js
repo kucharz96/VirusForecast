@@ -57,6 +57,12 @@
                         info: false,
                         orderable: false,
                         targets: 8,
+                    },
+                    {
+                        searchPanes: {
+                            show: true
+                        },
+                        targets: [0, 1, 2, 3, 4, 5, 6, 7]
                     }
                 ],
                 "responsive": true,

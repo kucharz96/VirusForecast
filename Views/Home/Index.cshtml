@@ -1,4 +1,4 @@
-﻿@model Microsoft.AspNetCore.Mvc.JsonResult
+﻿@model VirusForecast.Models.HomeViewModel.HomeViewModel
 
 @{
     ViewData["Title"] = "Prediction";
@@ -58,12 +58,70 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="control-label">From</label>
+                <label class="control-label">Date from</label>
                 <input type="date" class="form-control" id="dateFrom" onchange="predict();" />
             </div>
             <div class="col-md-6">
-                <label class="control-label">To</label>
+                <label class="control-label">Date to</label>
                 <input type="date" class="form-control" id="dateTo" onchange="predict();" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">Age from</label>
+                <input type="number" class="form-control" id="dateFrom" onchange="predict();" />
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">Age to</label>
+                <input type="number" class="form-control" id="dateTo" onchange="predict();" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-12">
+                <label class="control-label">Gender</label>
+                <div class="row">
+                    <ul class="gender-pick">
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="M" id="Gender1" name="Gender" checked="checked" />
+                                <label for="Gender1">Male</label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="F" id="Gender2" name="Gender" />
+                                <label for="Gender2">Female</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-4">
+                                <input type="radio" value="B" id="Gender3" name="Gender" />
+                                <label for="Gender3">Both</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="form-group col-lg-6">
+                <label class="control-label">Region</label>
+                <select class="form-control" asp-items="@Model.Regions">
+                    <option value="-1" selected disabled hidden>--Please select one--</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-6">
+                <label class="control-label">Work mode</label>
+                <select class="form-control" asp-items="@Model.WorkdModes">
+                    <option value="-1" selected disabled hidden>--Please select one--</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">Children amount</label>
+                <input type="number" class="form-control" id="dateFrom" onchange="predict();" />
             </div>
         </div>
     </div>
@@ -76,6 +134,8 @@
 <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
 <script src="~/plugins/chart.js/Chart.min.js"></script>
+
+<link rel="stylesheet" href="~/css/customRadioButton.css" />
 <!-- AdminLTE App -->
 <!--<script src="~/dist/js/adminlte.min.js"></script>-->
 <!-- AdminLTE for demo purposes -->
@@ -198,7 +258,6 @@
         }
 
     function predict() {
-
         var from = new Date($('#dateFrom').val());
         var to = new Date($('#dateTo').val());
         if (isValidDate(from) && isValidDate(to)) {
