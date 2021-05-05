@@ -97,9 +97,15 @@
                 </select>
                 <span asp-validation-for="WorkModeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" type="date" class="form-control" id="dateFrom" ng-model="model.Date" />
             </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
         </div>
     </form>
 </div>

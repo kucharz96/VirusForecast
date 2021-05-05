@@ -46,6 +46,12 @@
                         info: false,
                         orderable: false,
                         targets: 3
+                    },
+                    {
+                        searchPanes: {
+                            show: true
+                        },
+                        targets: [0,1,2]
                     }
                 ],
                 "responsive": true,
@@ -54,69 +60,74 @@
                 "paging": true,
                 "info": true,
                 "searching": true,
-                "ordering": true,
-                "buttons": [{
-                    extend: "copy",
-                    exportOptions: {
-                        columns: [0, 1, 2],
-                        format: {
-                            header: function (data, columnIdx) {
-                                return getColumnName(columnIdx);
-                            }
-                        }
-                    }
-                },
-                    {
-                        extend: "csv",
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                "buttons": {
+                    buttons: [
+                        {
+                            extend: 'searchPanes'
+                        },
+                        {
+                            extend: "copy",
+                            exportOptions: {
+                                columns: [0, 1, 2],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    {
-                        extend: "excel",
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                        },
+                        {
+                            extend: "csv",
+                            exportOptions: {
+                                columns: [0, 1, 2],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    {
-                        extend: "pdf",
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                        },
+                        {
+                            extend: "excel",
+                            exportOptions: {
+                                columns: [0, 1, 2],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    {
-                        extend: "print",
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                        },
+                        {
+                            extend: "pdf",
+                            exportOptions: {
+                                columns: [0, 1, 2],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
+                        },
+                        {
+                            extend: "print",
+                            exportOptions: {
+                                columns: [0, 1, 2],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            extend: "colvis",
+                            columnText: function (dt, idx, title) {
+                                return getColumnName(idx);
+                            }
                         }
-                    },
-                    /*{ jak po wyszukaniu, odznaczy sie jakies kolumny, to zle formatuje tabele
-                        extend: "colvis",
-                        columnText: function (dt, idx, title) {
-                            return getColumnName(idx);
-                        }
-                    }*/
-                ],
+                    ],
+                }
             }).buttons().container().appendTo('#doctorsTable_wrapper .col-md-6:eq(0)');
         });
     }

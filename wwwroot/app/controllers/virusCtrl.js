@@ -40,6 +40,9 @@
                     titleTemp = "Work Mode";
                     break;
                 case 7:
+                    titleTemp = "Date";
+                    break;
+                case 8:
                     titleTemp = "Actions";
                     break;
             }
@@ -53,7 +56,7 @@
                         searchable: false,
                         info: false,
                         orderable: false,
-                        targets: 7,
+                        targets: 8,
                     }
                 ],
                 "responsive": true,
@@ -62,12 +65,15 @@
                 "paging": true,
                 "info": true,
                 "searching": true,
-                "ordering": true,
-                "buttons": [
+                "buttons": {
+                    buttons: [
+                    {
+                        extend: 'searchPanes'
+                    },
                     {
                         extend: "copy",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7],
                             format: {
                                 header: function (data, columnIdx) {
                                     return getColumnName(columnIdx);
@@ -78,7 +84,7 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7],
                             format: {
                                 header: function (data, columnIdx) {
                                     return getColumnName(columnIdx);
@@ -89,7 +95,7 @@
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7],
                             format: {
                                 header: function (data, columnIdx) {
                                     return getColumnName(columnIdx);
@@ -100,7 +106,7 @@
                     {
                         extend: "pdf",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7],
                             format: {
                                 header: function (data, columnIdx) {
                                     return getColumnName(columnIdx);
@@ -111,7 +117,7 @@
                     {
                         extend: "print",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7],
                             format: {
                                 header: function (data, columnIdx) {
                                     return getColumnName(columnIdx);
@@ -119,13 +125,14 @@
                             }
                         }
                     },
-                    /*{ jak po wyszukaniu, odznaczy sie jakies kolumny, to zle formatuje tabele
+                    {
                         extend: "colvis",
                         columnText: function (dt, idx, title) {
                             return getColumnName(idx);
-                        }
-                    }*/
-                ],
+                        },
+                    }
+                    ],                   
+                }
             }).buttons().container().appendTo('#virusCasesTable_wrapper .col-md-6:eq(0)');
         });
 
@@ -148,5 +155,4 @@
         //};
     }
 
-    
 })();

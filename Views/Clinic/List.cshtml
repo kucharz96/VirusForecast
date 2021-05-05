@@ -11,36 +11,16 @@
 
 
     <div class="panel panel-default" ng-controller="clinicCtrl as vm">
-        <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
-        <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
         <div class="panel-body">
             <table id="clinicsTable" class="table table-bordered table-hover bg-white">
                 <thead>
                     <tr>
-                        <th>
-                            <a style="margin-left: 5px" class="clear" ng-click="sortKey='Name'; reverse = !reverse">
-                                Name
-                                <span class="fa fa-sort-up" ng-show="sortKey=='Name'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                            </a>  
-                        </th>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
                         <th>Actions</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form class="form-inline" style="margin-bottom: 10px">
-                                <div class="form-group">
-                                    <input type="text" ng-model="searchName" class="form-control" placeholder="Name...">
-                                    <a style="margin-left: 5px" class="clear" ng-show="searchName!='' && searchName!=null" ng-click="searchName = ''">
-                                        <span class="fa fa-ban"></span>
-                                    </a>
-                                </div>
-                            </form>
-                        </td>
-                        <td><button class="btn btn-outline-primary" ng-click="searchName = ''">Clear search</button></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Name: searchName}">
+                    <tr ng-repeat="i in vm.model">
                         <td>
                             {{i.Name}}
                         </td>

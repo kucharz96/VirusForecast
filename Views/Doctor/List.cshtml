@@ -11,68 +11,18 @@
 
 
 <div class="panel panel-default" ng-controller="accountCtrl as vm">
-    <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
-    <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
     <div class="panel-body">
         <table id="doctorsTable" class="table table-bordered table-hover bg-white">
             <thead>
                 <tr>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Email'; reverse = !reverse">
-                            Email
-                            <span class="fa fa-sort-up" ng-show="sortKey=='Email'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Clinic'; reverse = !reverse">
-                            Clinic
-                            <span class="fa fa-sort-up" ng-show="sortKey=='Clinic'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='EmailConfirmedString'; reverse = !reverse">
-                            Is email confirmed?
-                            <span class="fa fa-sort-up" ng-show="sortKey=='EmailConfirmedString'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
+                    <th>Email</th>
+                    <th>Clinic</th>
+                    <th>Is email confirmed?</th>
                     <th>Actions</th>
-                </tr>
-                <tr>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchEmail" class="form-control" placeholder="Email...">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchEmail!='' && searchEmail!=null" ng-click="searchEmail = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchClinic" class="form-control" placeholder="Clinic...">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchClinic!='' && searchClinic!=null" ng-click="searchClinic = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchEmailConfirmed" class="form-control" placeholder="Confirmed...">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchEmailConfirmed!='' && searchEmailConfirmed!=null" ng-click="searchEmailConfirmed = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td><button class="btn btn-outline-primary" ng-click="searchEmail=''; searchClinic=''; searchEmailConfirmed=''">Clear search</button></td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Email: searchEmail, Clinic: {Name: searchClinic}, EmailConfirmedString: searchEmailConfirmed }">
+                <tr ng-repeat="i in vm.model">
                     <td>
                         {{i.Email}}
                     </td>

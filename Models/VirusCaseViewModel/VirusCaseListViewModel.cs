@@ -30,6 +30,7 @@ namespace VirusForecast.Models.VirusCaseViewModel
         [Display(Name = "Date")]
         public DateTime Date { get; set; }
 
+        public String DateString { get; set; }
         public string VirusPositiveString { get; set; }
 
         [Required]

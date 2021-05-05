@@ -36,77 +36,88 @@
                         info: false,
                         orderable: false,
                         targets: 1
+                    },
+                    {
+                        searchPanes: {
+                            show: true
+                        },
+                        targets: [0]
                     }
                 ],
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "paging": true,
-                "info": true, 
-                "searching": true, 
-                "ordering": true,
-                "buttons": [{
-                    extend: "copy",
-                    exportOptions: {
-                        columns: [0],
-                        format: {
-                            header: function (data, columnIdx) {
-                                return getColumnName(columnIdx);
-                            }
-                        }
-                    }
-                },
-                    {
-                        extend: "csv",
-                        exportOptions: {
-                            columns: [0],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                "info": true,
+                "searching": true,
+                "buttons": {
+                    buttons: [
+                        {
+                            extend: 'searchPanes'
+                        },
+                        {
+                            extend: "copy",
+                            exportOptions: {
+                                columns: [0],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    {
-                        extend: "excel",
-                        exportOptions: {
-                            columns: [0],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                        },
+                        {
+                            extend: "csv",
+                            exportOptions: {
+                                columns: [0],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    {
-                        extend: "pdf",
-                        exportOptions: {
-                            columns: [0],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                        },
+                        {
+                            extend: "excel",
+                            exportOptions: {
+                                columns: [0],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
-                        }
-                    },
-                    {
-                        extend: "print",
-                        exportOptions: {
-                            columns: [0],
-                            format: {
-                                header: function (data, columnIdx) {
-                                    return getColumnName(columnIdx);
+                        },
+                        {
+                            extend: "pdf",
+                            exportOptions: {
+                                columns: [0],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
                                 }
                             }
+                        },
+                        {
+                            extend: "print",
+                            exportOptions: {
+                                columns: [0],
+                                format: {
+                                    header: function (data, columnIdx) {
+                                        return getColumnName(columnIdx);
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            extend: "colvis",
+                            columnText: function (dt, idx, title) {
+                                return getColumnName(idx);
+                            }
                         }
-                    },
-                /*{ jak po wyszukaniu, odznaczy sie jakies kolumny, to zle formatuje tabele
-                    extend: "colvis",
-                    columnText: function (dt, idx, title) {
-                        return getColumnName(idx);
-                    }
-                }*/
-                ],
+                    ],
+                }
             }).buttons().container().appendTo('#clinicsTable_wrapper .col-md-6:eq(0)');
         });
     }

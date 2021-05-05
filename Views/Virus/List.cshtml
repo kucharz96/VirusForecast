@@ -11,132 +11,23 @@
 
 <hr />
 <div class="panel panel-default" ng-controller="virusCtrl as vm">
-    <p ng-model="sortKey" hidden>Sort key: {{sortKey}}</p>
-    <p ng-model="reverse" hidden>Reverse: {{reverse}}</p>
     <div class="panel-body">
         <table id="virusCasesTable" class="table table-bordered table-hover bg-white">
             <thead>
                 <tr>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Age'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.Age)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='Age'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='Gender'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.Gender)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='Gender'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='ChildrenAmount'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.ChildrenAmount)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='ChildrenAmount'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='VirusPositiveString'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.VirusPositive)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='VirusPositiveString'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='ClinicId'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.ClinicId)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='ClinicId'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='RegionId'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.RegionId)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='RegionId'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a style="margin-left: 5px" class="clear" ng-click="sortKey='WorkModeId'; reverse = !reverse">
-                            @Html.DisplayNameFor(model => model.WorkModeId)
-                            <span class="fa fa-sort-up" ng-show="sortKey=='WorkModeId'" ng-class="{'fa fa-sort-up':reverse,'fa fa-sort-down':!reverse}"></span>
-                        </a>
-                    </th>
+                    <th>@Html.DisplayNameFor(model => model.Age)</th>
+                    <th>@Html.DisplayNameFor(model => model.Gender)</th>
+                    <th>@Html.DisplayNameFor(model => model.ChildrenAmount)</th>
+                    <th>@Html.DisplayNameFor(model => model.VirusPositive)</th>
+                    <th>@Html.DisplayNameFor(model => model.ClinicId)</th>
+                    <th>@Html.DisplayNameFor(model => model.RegionId)</th>
+                    <th>@Html.DisplayNameFor(model => model.WorkModeId)</th>
+                    <th>@Html.DisplayNameFor(model => model.Date)</th>
                     <th>Actions</th>
-                </tr>
-                <tr>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchAge" class="form-control" placeholder="Age..." style="max-width: 70px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchAge!='' && searchAge!=null" ng-click="searchAge = ''; vm.redrawTable()">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchGender" class="form-control" placeholder="Gender..." style="max-width: 90px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchGender!='' && searchGender!=null" ng-click="searchGender = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchChildren" class="form-control" placeholder="Children..." style="max-width: 100px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchChildren!='' && searchChildren!=null" ng-click="searchChildren = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchVirus" class="form-control" placeholder="Virus..." style="max-width: 100px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchVirus!='' && searchVirus!=null" ng-click="searchVirus = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchClinic" class="form-control" placeholder="Clinic..." style="max-width: 150px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchClinic!='' && searchClinic!=null" ng-click="searchClinic = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchRegion" class="form-control" placeholder="Region..." style="max-width: 150px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchRegion!='' && searchRegion!=null" ng-click="searchRegion = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-inline" style="margin-bottom: 10px">
-                            <div class="form-group">
-                                <input type="text" ng-model="searchWork" class="form-control" placeholder="Work..." style="max-width: 150px">
-                                <a style="margin-left: 5px" class="clear" ng-show="searchWork!='' && searchWork!=null" ng-click="searchWork = ''">
-                                    <span class="fa fa-ban"></span>
-                                </a>
-                            </div>
-                        </form>
-                    </td>
-                    <td><button class="btn btn-outline-primary" ng-click="searchAge = ''; searchGender=''; searchChildren=''; searchVirus=''; searchClinic=''; searchRegion=''; searchWork=''">Clear search</button></td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in vm.model | orderBy : sortKey : reverse | filter: {Age: searchAge, Gender: searchGender, ChildrenAmount: searchChildren, VirusPositiveString: searchVirus, ClinicId: searchClinic, RegionId: searchRegion, WorkModeId: searchWork}">
+                <tr ng-repeat="i in vm.model">
                     <td>
                         {{i.Age}}
                     </td>
@@ -157,6 +48,9 @@
                     </td>
                     <td>
                         {{i.WorkModeId}}
+                    </td>
+                    <td>
+                        {{i.DateString}}
                     </td>
                     <td>
                         <div class="row">

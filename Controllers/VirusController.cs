@@ -169,6 +169,7 @@ namespace VirusForecast.Controllers
                 RegionId = _regionRepository.GetName(x.RegionId),
                 Gender = x.Gender,
                 Date = x.Date,
+                DateString = x.Date.ToString("yyyy-MM-dd"),
                 VirusPositive = x.VirusPositive,
                 VirusPositiveString = x.VirusPositive ? "Yes" : "No",
                 WorkModeId = _workModeRepository.GetName(x.WorkModeId)
