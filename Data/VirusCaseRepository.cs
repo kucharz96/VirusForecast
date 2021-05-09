@@ -88,6 +88,30 @@ namespace VirusForecast.Data
                     cases = cases.Where(i => i.Date <= filters.DateTo);
                 }
             }
+            if (filters.Gender.HasValue && filters.Gender != 'B')
+            {
+                cases = cases.Where(i => i.Gender == filters.Gender.Value);
+            }
+            if (!string.IsNullOrEmpty(filters.Region) && filters.Region != "-1")
+            {
+                cases = cases.Where(i => i.RegionId == filters.Region);
+            }
+            if (!string.IsNullOrEmpty(filters.WorkMode) && filters.WorkMode != "-1")
+            {
+                cases = cases.Where(i => i.WorkModeId == filters.WorkMode);
+            }
+            if (filters.ChildrenAmount.HasValue && filters.ChildrenAmount.Value >= 0)
+            {
+                cases = cases.Where(i => i.ChildrenAmount == filters.ChildrenAmount.Value);
+            }
+            if (filters.AgeFrom.HasValue && filters.AgeFrom.Value >= 0)
+            {
+                cases = cases.Where(i => i.Age >= filters.AgeFrom.Value);
+            }
+            if (filters.AgeTo.HasValue && filters.AgeTo.Value >= 0)
+            {
+                cases = cases.Where(i => i.Age <= filters.AgeTo.Value);
+            }
 
 
             var statisics = cases.GroupBy(i => i.Date)
@@ -101,49 +125,49 @@ namespace VirusForecast.Data
                 .ToList();
 
             List<CaseStatisic> caseStatisics = new List<CaseStatisic>();
-           
+
             //if (statisics.Count() > 0) {
 
-                DateTime dateFrom, dateTo;
+            DateTime dateFrom, dateTo;
 
-                if (!filters.DateFrom.HasValue)
+            if (!filters.DateFrom.HasValue)
+            {
+                dateFrom = statisics.First().Date;
+            }
+            else
+            {
+                dateFrom = filters.DateFrom.Value;
+            }
+
+
+            if (!filters.DateTo.HasValue)
+            {
+                dateTo = DateTime.Now.Date;
+
+            }
+            else if (filters.DateTo.Value > DateTime.Now.Date)
+            {
+                dateTo = DateTime.Now.Date;
+            }
+            else
+            {
+                dateTo = filters.DateTo.Value;
+            }
+
+            for (var startDate = dateFrom; startDate <= dateTo; startDate = startDate.AddDays(1))
+            {
+                var statObject = statisics.Where(x => x.Date == startDate).FirstOrDefault();
+                if (statObject == null)
                 {
-                    dateFrom = statisics.First().Date;
+                    caseStatisics.Add(new CaseStatisic() { Date = startDate, CasesCount = 0 });
                 }
                 else
                 {
-                    dateFrom = filters.DateFrom.Value;
+                    caseStatisics.Add(statObject);
                 }
-
-
-                if (!filters.DateTo.HasValue)
-                {
-                    dateTo = DateTime.Now.Date;
-
-                }
-                else if(filters.DateTo.Value > DateTime.Now.Date)
-                {
-                    dateTo = DateTime.Now.Date;
-                }
-                else 
-                {
-                    dateTo = filters.DateTo.Value;  
-                }
-
-                for (var startDate = dateFrom; startDate <= dateTo; startDate = startDate.AddDays(1))
-                {
-                    var statObject = statisics.Where(x => x.Date == startDate).FirstOrDefault();
-                    if (statObject == null)
-                    {
-                        caseStatisics.Add(new CaseStatisic() { Date = startDate, CasesCount = 0 });
-                    }
-                    else
-                    {
-                        caseStatisics.Add(statObject);
-                    }
-                }
+            }
             //}
-            
+
             return caseStatisics;
 
 
@@ -151,7 +175,7 @@ namespace VirusForecast.Data
 
         public List<CaseStatisic> GetForecastCases(CaseStatisticFilters filters)
         {
-            if(filters.DateTo.HasValue && filters.DateTo <= DateTime.Now.Date)
+            if (filters.DateTo.HasValue && filters.DateTo <= DateTime.Now.Date)
             {
                 return new List<CaseStatisic>();
             }
@@ -161,7 +185,7 @@ namespace VirusForecast.Data
                 DateTime generateDateTo;
 
 
-                if(!filters.DateFrom.HasValue || filters.DateFrom <= DateTime.Now.Date)
+                if (!filters.DateFrom.HasValue || filters.DateFrom <= DateTime.Now.Date)
                 {
                     generateDateFrom = DateTime.Now.Date.AddDays(1);
                 }
@@ -181,7 +205,7 @@ namespace VirusForecast.Data
 
                 var statistic = new List<CaseStatisic>();
 
-                for(var startDate = generateDateFrom; startDate <= generateDateTo; startDate = startDate.AddDays(1))
+                for (var startDate = generateDateFrom; startDate <= generateDateTo; startDate = startDate.AddDays(1))
                 {
                     Random rnd = new Random();
                     int caseNumber = rnd.Next(11);

@@ -69,11 +69,11 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="control-label">Age from</label>
-                <input type="number" class="form-control" id="dateFrom" onchange="predict();" />
+                <input type="number" class="form-control" id="ageFrom" onchange="predict();" />
             </div>
             <div class="col-md-6">
                 <label class="control-label">Age to</label>
-                <input type="number" class="form-control" id="dateTo" onchange="predict();" />
+                <input type="number" class="form-control" id="ageTo" onchange="predict();" />
             </div>
         </div>
         <div class="row">
@@ -83,20 +83,20 @@
                     <ul class="gender-pick">
                         <li>
                             <div class="col-4">
-                                <input type="radio" value="M" id="Gender1" name="Gender" checked="checked" />
+                                <input type="radio" value="M" id="Gender1" name="Gender" onchange="predict();" />
                                 <label for="Gender1">Male</label>
                             </div>
                         </li>
 
                         <li>
                             <div class="col-4">
-                                <input type="radio" value="F" id="Gender2" name="Gender" />
+                                <input type="radio" value="F" id="Gender2" name="Gender" onchange="predict();" />
                                 <label for="Gender2">Female</label>
                             </div>
                         </li>
                         <li>
                             <div class="col-4">
-                                <input type="radio" value="B" id="Gender3" name="Gender" />
+                                <input type="radio" value="B" id="Gender3" name="Gender" checked="checked" onchange="predict();" />
                                 <label for="Gender3">Both</label>
                             </div>
                         </li>
@@ -107,13 +107,13 @@
         <div class="row" style="margin-top: 20px">
             <div class="form-group col-lg-6">
                 <label class="control-label">Region</label>
-                <select class="form-control" asp-items="@Model.Regions">
+                <select class="form-control" asp-items="@Model.Regions" id="regions" onchange="predict();">
                     <option value="-1" selected disabled hidden>--Please select one--</option>
                 </select>
             </div>
             <div class="form-group col-lg-6">
                 <label class="control-label">Work mode</label>
-                <select class="form-control" asp-items="@Model.WorkdModes">
+                <select class="form-control" asp-items="@Model.WorkdModes" id="workModes" onchange="predict();">
                     <option value="-1" selected disabled hidden>--Please select one--</option>
                 </select>
             </div>
@@ -121,7 +121,7 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="control-label">Children amount</label>
-                <input type="number" class="form-control" id="dateFrom" onchange="predict();" />
+                <input type="number" class="form-control" id="childrenAmount" onchange="predict();" />
             </div>
         </div>
     </div>
@@ -146,11 +146,11 @@
         getResults();
         // Get context with jQuery - using jQuery's .get() method.
     });
-    function getResults(from = null, to = null) {
+    function getResults(filterData) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("GetCasesStatistics", "Virus")',
-                data: { dateFrom: from, dateTo: to },
+                data: { filters: filterData},
                 success: function (data) {
 
                     datesRealCases = [];
@@ -174,7 +174,7 @@
                             {
                                 label: 'Real cases',
                                 backgroundColor: 'rgba(60,141,188,0.9)',
-                                borderColor: 'rgba(60,141,188,0.8)',
+                                borderColor: 'rgba(60,141,188,0.😎',
                                 pointRadius: false,
                                 pointColor: '#3b8bba',
                                 pointStrokeColor: 'rgba(60,141,188,1)',
@@ -258,16 +258,25 @@
         }
 
     function predict() {
-        var from = new Date($('#dateFrom').val());
-        var to = new Date($('#dateTo').val());
-        if (isValidDate(from) && isValidDate(to)) {
-            getResults($('#dateFrom').val(), $('#dateTo').val());
+        var filterData = new Object();
+        filterData.DateFrom = $('#dateFrom').val();
+        filterData.DateTo = $('#dateTo').val();
+        filterData.AgeFrom = $('#ageFrom').val();
+        filterData.AgeTo = $('#ageTo').val();
+        filterData.Gender = $('input[name=Gender]:checked').val();
+        filterData.Region = $("#regions option").filter(":selected").val();
+        filterData.WorkMode = $("#workModes option").filter(":selected").val();
+        filterData.ChildrenAmount = $('#childrenAmount').val();
+        console.log(filterData);
+
+
+        if (isValidDate(filterData.DateFrom) && isValidDate(filterData.DateTo)) {
+            getResults(filterData);
         }
 
     }
 
     function isValidDate(d) {
-        return d instanceof Date && !isNaN(d);
+        return d != null && d != undefined && d != "";
     }
 </script>
-

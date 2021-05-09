@@ -384,18 +384,8 @@ namespace VirusForecast.Controllers
         }
 
         [AllowAnonymous]
-        public JsonResult GetCasesStatistics(string dateFrom, string dateTo)
+        public JsonResult GetCasesStatistics(CaseStatisticFilters filters)
         {
-            CaseStatisticFilters filters = new CaseStatisticFilters();
-            try
-            {
-                filters.DateFrom = DateTime.Parse(dateFrom);
-                filters.DateTo = DateTime.Parse(dateTo);
-            }
-            catch (Exception)
-            {
-
-            }
 
             var realCases = _virusCaseRepository.GetRealCases(filters);
             var forecastCases = _virusCaseRepository.GetForecastCases(filters);
