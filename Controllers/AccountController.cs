@@ -12,21 +12,25 @@ using VirusForecast.Models;
 using VirusForecast.Models.AccountViewModels;
 using Newtonsoft.Json;
 using VirusForecast.Data.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace VirusForecast.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IClinicRepository _clinicRepository;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
 
         public AccountController(
             SignInManager<User> signInManager,
             IDoctorRepository doctorRepository,
+            IClinicRepository clinicRepository,
             ILogger<AccountController> logger)
         {
             _doctorRepository = doctorRepository;
+            _clinicRepository = clinicRepository;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -36,8 +40,19 @@ namespace VirusForecast.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            var clinics =new List<SelectListItem>();
+            clinics = _clinicRepository.GetAll()
+              .Select(a => new SelectListItem
+              { Text = a.Name, Value = a.Id.ToString() }
+              ).ToList();
+
+            var model = new RegisterViewModel
+            {
+                Clinics = clinics
+            };
+
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -46,9 +61,17 @@ namespace VirusForecast.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            var clinics = new List<SelectListItem>();
+            clinics = _clinicRepository.GetAll()
+              .Select(a => new SelectListItem
+              { Text = a.Name, Value = a.Id.ToString() }
+              ).ToList();
+            model.Clinics = clinics;
+
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email,EmailConfirmed = false };
+                var clinic = _clinicRepository.Get(model.ClinicId);
+                var user = new User { UserName = model.Email, Email = model.Email,EmailConfirmed = false, ClinicId = model.ClinicId , Clinic = clinic};
                 var errors = await _doctorRepository.Add(user, model.Password);
                 if (errors == null)
                 {

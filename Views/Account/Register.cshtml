@@ -44,6 +44,13 @@
                         <input asp-for="ConfirmPassword" class="form-control" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="ClinicId"></label>
+                        <select asp-for="ClinicId" class="form-control" asp-items="@Model.Clinics">
+                            <option value="-1" selected disabled hidden>--Please select one--</option>
+                        </select>
+                        <span asp-validation-for="ClinicId" class="text-danger"></span>
+                    </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
                 <p>
