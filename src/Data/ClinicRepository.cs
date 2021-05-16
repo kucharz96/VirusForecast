@@ -20,12 +20,13 @@ namespace VirusForecast.Data
         }
 
         // <inheritdoc/>
-        public void Add(string name)
+        public Clinic Add(string name)
         {
             var clinic = new Clinic();
             clinic.Name = name;
             _context.Add(clinic);
             _context.SaveChanges();
+            return clinic;
         }
 
         // <inheritdoc/>

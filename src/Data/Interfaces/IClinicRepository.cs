@@ -47,7 +47,7 @@ namespace VirusForecast.Data.Interfaces
         /// Dodanie placówki o zadanej nazwie.
         /// </summary>
         /// <param name="name">Nazwa placówki.</param>
-        void Add(string name);
+        Clinic Add(string name);
 
         string GetClinicName(string id);
 
