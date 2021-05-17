@@ -6,7 +6,7 @@ using VirusForecast.Data;
 using VirusForecast.Data.Interfaces;
 using Xunit;
 
-namespace VirusForecast.Tests
+namespace VirusForecast.Tests.Repository
 {
     /// <summary>
     /// Klasa testów do repozytorium kliniki.
@@ -64,9 +64,13 @@ namespace VirusForecast.Tests
             // Assert
             var clinic = dbContext.Clinics.FirstOrDefault();
             Assert.Equal("Klinika", deleteClinic.Name);
-            //Assert.Null(clinic);
+            Assert.Null(clinic);
         }
 
+        /// <summary>
+        /// Inicjalizacja bazy danych w pamiêci.
+        /// </summary>
+        /// <returns></returns>
         private ApplicationDbContext GetInMemoryDbContext()
         {
             DbContextOptions<ApplicationDbContext> options;
