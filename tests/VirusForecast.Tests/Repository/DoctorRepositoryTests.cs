@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using VirusForecast.Data;
 using VirusForecast.Data.Interfaces;
 using VirusForecast.Models;
-using VirusForecast.Tests.Data;
 using Xunit;
 
 namespace VirusForecast.Tests.Repository
