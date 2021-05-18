@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,22 @@ namespace VirusForecast.Tests
         private readonly IClinicRepository clinicRepository;
         private readonly IRegionRepository regionRepository;
         private readonly IWorkModeRepository workModeRepository;
-        private readonly UserManager<User> userManager;
         private readonly VirusController virusController;
-        private readonly ILogger<VirusController> logger;
 
         public VirusControllerTests()
         {
-            logger = null;
+            var fakeUserManager = new FakeUserManagerBuilder()
+        .Build();
+
+            var mock = new Mock<ILogger<VirusController>>();
+            ILogger<VirusController> logger = mock.Object;
+
             var dbContext = GetInMemoryDbContext();
             virusCaseRepository = new VirusCaseRepository(dbContext);
             clinicRepository = new ClinicRepository(dbContext);
             regionRepository = new RegionRepository(dbContext);
             workModeRepository = new WorkModeRepository(dbContext);
-            virusController = new VirusController(virusCaseRepository, clinicRepository, regionRepository, workModeRepository, logger, userManager);
+            virusController = new VirusController(virusCaseRepository, clinicRepository, regionRepository, workModeRepository, logger, fakeUserManager.Object);
         }
 
         [Fact]
