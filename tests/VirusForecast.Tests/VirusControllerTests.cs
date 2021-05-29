@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using VirusForecast.Controllers;
@@ -36,7 +38,20 @@ namespace VirusForecast.Tests
             var mock = new Mock<ILogger<VirusController>>();
 
             ILogger<VirusController> logger = mock.Object;
+
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, "example name"),
+                    new Claim(ClaimTypes.NameIdentifier, "1"),
+                    new Claim("custom-claim", "example claim value"),
+                }, "mock"));
+
+
             virusController = new VirusController(virusCaseRepository, clinicRepository, regionRepository, workModeRepository, logger,context.UserManager);
+            virusController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
         }
 
         [Fact]
