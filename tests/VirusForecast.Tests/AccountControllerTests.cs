@@ -61,10 +61,10 @@ namespace VirusForecast.Tests
                 ConfirmPassword = "12345678A."
             };
 
-            var result = await accountController.Register(newUser) as Task<ViewResult>;
-            var viewResult = result.Result;
-            var model = (User)viewResult.Model;
-            Assert.NotNull(model);
+            var result = await accountController.Register(newUser);
+            var user = this.doctorRepository.GetByEmail(newUser.Email);
+            Assert.NotNull(result);
+            Assert.NotNull(user);
         }
 
         [Fact]

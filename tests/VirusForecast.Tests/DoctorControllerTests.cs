@@ -21,6 +21,7 @@ namespace VirusForecast.Tests
     {
         private readonly ILogger<DoctorController> logger;
         private readonly DoctorController doctorController;
+        private readonly IDoctorRepository _doctorRepository;
         public DoctorControllerTests()
         {
 
@@ -34,7 +35,7 @@ namespace VirusForecast.Tests
             ILogger<DoctorController> logger = mock.Object;
 
             doctorController = new DoctorController(doctorRepository,clinicRepository, logger);
-
+            _doctorRepository = new Mock<DoctorRepository>(context.Context, context.UserManager).Object;
         }
 
         [Fact]
@@ -64,11 +65,8 @@ namespace VirusForecast.Tests
                 ConfirmPassword = "12345678A."
             };
 
-            var result = await doctorController.Add(newDoctor) as Task<ViewResult>;
-            var viewResult = result.Result;
-            var model = (User)viewResult.Model;
-            Assert.NotNull(model);
-            var testDoctor = Assert.IsAssignableFrom<User>(viewResult.Model);
+            await doctorController.Add(newDoctor);
+            var testDoctor = this._doctorRepository.GetByEmail(newDoctor.Email);
             Assert.Equal(newDoctor.Email, testDoctor.Email);
         } 
     }

@@ -53,6 +53,12 @@ namespace VirusForecast.Data
         {
             return _context.Users.Find(id);
         }
+
+        public User GetByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(x=>x.Email==email);
+        }
+
         public void Edit(AddEditViewModel model)
         {
             var user = Get(model.Id);
