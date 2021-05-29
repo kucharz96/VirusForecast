@@ -23,7 +23,7 @@ namespace VirusForecast.Tests.Repository
         public void AddVirusCaseTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IVirusCaseRepository repository = new VirusCaseRepository(dbContext);
             VirusCase virusCase = new VirusCase();
             virusCase.Age = 30;
@@ -52,7 +52,7 @@ namespace VirusForecast.Tests.Repository
         public void BindClinicToVirusCaseTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IVirusCaseRepository virusCaseRepository = new VirusCaseRepository(dbContext);
             IClinicRepository clinicRepository = new ClinicRepository(dbContext);
             var savedClinic = clinicRepository.Add("Klinika");
@@ -76,7 +76,7 @@ namespace VirusForecast.Tests.Repository
         public void DeleteVirusCaseTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IVirusCaseRepository virusCaseRepository = new VirusCaseRepository(dbContext);
             VirusCase virusCase = new VirusCase();
             virusCaseRepository.Add(virusCase);
@@ -96,7 +96,7 @@ namespace VirusForecast.Tests.Repository
         public void GetVirusRealCasesByDateFromAndDateToTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IVirusCaseRepository virusCaseRepository = new VirusCaseRepository(dbContext);
             VirusCase virusCase1 = new VirusCase() { Date = new DateTime(2021, 3, 21), VirusPositive = true };
             VirusCase virusCase2 = new VirusCase() { Date = new DateTime(2021, 3, 4), VirusPositive = true };
@@ -133,7 +133,7 @@ namespace VirusForecast.Tests.Repository
         public void GetVirusRealCasesByChildrenAmountTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IVirusCaseRepository virusCaseRepository = new VirusCaseRepository(dbContext);
             VirusCase virusCase1 = new VirusCase() { Date = new DateTime(2021, 3, 1), VirusPositive = true, ChildrenAmount = 5 };
             VirusCase virusCase2 = new VirusCase() { Date = new DateTime(2021, 3, 2), VirusPositive = true, ChildrenAmount = 2 };
@@ -169,7 +169,7 @@ namespace VirusForecast.Tests.Repository
         public void GetVirusRealCasesByGenderTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IVirusCaseRepository virusCaseRepository = new VirusCaseRepository(dbContext);
             VirusCase virusCase1 = new VirusCase() { Date = new DateTime(2021, 3, 1), VirusPositive = true, Gender = 'K' };
             VirusCase virusCase2 = new VirusCase() { Date = new DateTime(2021, 3, 2), VirusPositive = true, Gender = 'K' };
@@ -203,11 +203,11 @@ namespace VirusForecast.Tests.Repository
         /// Inicjalizacja bazy danych w pamięci.
         /// </summary>
         /// <returns></returns>
-        private ApplicationDbContext GetInMemoryDbContext()
+        private ApplicationDbContext GetInMemoryDbContext(Guid gu)
         {
             DbContextOptions<ApplicationDbContext> options;
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseInMemoryDatabase(":testdb");
+            builder.UseInMemoryDatabase(gu.ToString());
             options = builder.Options;
             ApplicationDbContext dbContext = new ApplicationDbContext(options);
             dbContext.Database.EnsureCreated();

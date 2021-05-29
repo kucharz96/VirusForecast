@@ -13,6 +13,10 @@ namespace VirusForecast.Tests.Repository
     /// </summary>
     public class ClinicRepositoryTests
     {
+
+
+
+
         /// <summary>
         /// Test dodania nowej kliniki do repozytorium.
         /// </summary>
@@ -20,7 +24,7 @@ namespace VirusForecast.Tests.Repository
         public void AddClinicTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IClinicRepository repository = new ClinicRepository(dbContext);
 
             // Act
@@ -38,7 +42,7 @@ namespace VirusForecast.Tests.Repository
         public void EditClinicTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IClinicRepository repository = new ClinicRepository(dbContext);
             var savedClinic = repository.Add("Klinika");
 
@@ -54,7 +58,7 @@ namespace VirusForecast.Tests.Repository
         public void DeleteClinicTest()
         {
             // Arrange
-            var dbContext = GetInMemoryDbContext();
+            var dbContext = GetInMemoryDbContext(Guid.NewGuid());
             IClinicRepository repository = new ClinicRepository(dbContext);
             var savedClinic = repository.Add("Klinika");
 
@@ -71,11 +75,11 @@ namespace VirusForecast.Tests.Repository
         /// Inicjalizacja bazy danych w pamiêci.
         /// </summary>
         /// <returns></returns>
-        private ApplicationDbContext GetInMemoryDbContext()
+        private ApplicationDbContext GetInMemoryDbContext(Guid gu)
         {
             DbContextOptions<ApplicationDbContext> options;
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseInMemoryDatabase(":testdb");
+            builder.UseInMemoryDatabase(gu.ToString());
             options = builder.Options;
             ApplicationDbContext dbContext = new ApplicationDbContext(options);
             dbContext.Database.EnsureCreated();

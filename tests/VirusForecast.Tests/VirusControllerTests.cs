@@ -27,18 +27,16 @@ namespace VirusForecast.Tests
 
         public VirusControllerTests()
         {
-            var fakeUserManager = new FakeUserManagerBuilder()
-        .Build();
+            MemoryApplicationContext context = new MemoryApplicationContext();
+            clinicRepository = new Mock<ClinicRepository>(context.Context).Object;
+            regionRepository = new Mock<RegionRepository>(context.Context).Object;
+            workModeRepository = new Mock<WorkModeRepository>(context.Context).Object;
 
+            virusCaseRepository = new Mock<VirusCaseRepository>(context.Context).Object;
             var mock = new Mock<ILogger<VirusController>>();
-            ILogger<VirusController> logger = mock.Object;
 
-            var dbContext = GetInMemoryDbContext();
-            virusCaseRepository = new VirusCaseRepository(dbContext);
-            clinicRepository = new ClinicRepository(dbContext);
-            regionRepository = new RegionRepository(dbContext);
-            workModeRepository = new WorkModeRepository(dbContext);
-            virusController = new VirusController(virusCaseRepository, clinicRepository, regionRepository, workModeRepository, logger, fakeUserManager.Object);
+            ILogger<VirusController> logger = mock.Object;
+            virusController = new VirusController(virusCaseRepository, clinicRepository, regionRepository, workModeRepository, logger,context.UserManager);
         }
 
         [Fact]
