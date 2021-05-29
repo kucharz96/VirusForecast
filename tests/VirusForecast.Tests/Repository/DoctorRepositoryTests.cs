@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -19,60 +22,41 @@ namespace VirusForecast.Tests.Repository
     /// </summary>
     public class DoctorRepositoryTests
     {
+        private IDoctorRepository doctorRepository;
+        private IClinicRepository clinicRepository;
+
+        public DoctorRepositoryTests()
+        {
+            MemoryApplicationContext context = new MemoryApplicationContext();
+            
+            doctorRepository = new Mock<DoctorRepository>(context.Context, context.UserManager).Object;
+            clinicRepository = new Mock<ClinicRepository>(context.Context).Object;
+        }
+
+
         /// <summary>
         /// Test dodania nowego lekarz do repozytorium.
         /// </summary>
         [Fact]
         public async Task AddDoctorTestAsync()
         {
-            // Arrange
-            var dbContext = GetInMemoryDbContext();
-            IDoctorRepository repository = new DoctorRepository(dbContext, MockUserManager(new List<User>()).Object);
-            IClinicRepository clinic_repository = new ClinicRepository(dbContext);
-            var savedClinic = clinic_repository.Add("Klinika");
-
+            Guid id = Guid.NewGuid();
             var user = new User()
             {
+                Id = id.ToString(),
                 UserName = "User",
                 Email = "user@email.com",
                 EmailConfirmed = false,
-                ClinicId = savedClinic.Id,
+                ClinicId = null
             };
 
             // Act
-            var errors = await repository.Add(user, "user123");
+            var errors = await doctorRepository.Add(user, "user123");
+            var userTest = doctorRepository.Get(id.ToString());
 
-            // Assert
-            var created = dbContext.Users.FirstOrDefault();
-            Assert.NotNull(created);
-            Assert.Null(errors);
+            Assert.NotNull(userTest);
+
         }
 
-        private ApplicationDbContext GetInMemoryDbContext()
-        {
-            DbContextOptions<ApplicationDbContext> options;
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseInMemoryDatabase(":testdb");
-            options = builder.Options;
-            ApplicationDbContext dbContext = new ApplicationDbContext(options);
-            dbContext.Database.EnsureCreated();
-            dbContext.Database.EnsureDeleted();
-            return dbContext;
-        }
-
-        private static Mock<UserManager<TUser>> MockUserManager<TUser>(List<TUser> ls) where TUser : class
-        {
-            var store = new Mock<IUserStore<TUser>>();
-            var mgr = new Mock<UserManager<TUser>>(store.Object, null, null, null, null, null, null, null, null);
-            mgr.Object.UserValidators.Add(new UserValidator<TUser>());
-            mgr.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
-
-            mgr.Setup(x => x.DeleteAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
-            mgr.Setup(x => x.CreateAsync(It.IsAny<TUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Callback<TUser, string>((x, y) => ls.Add(x));
-            mgr.Setup(x => x.UpdateAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
-            mgr.Setup(x => x.AddToRoleAsync(It.IsAny<TUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
-
-            return mgr;
-        }
     }
 }

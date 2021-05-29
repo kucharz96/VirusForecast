@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -26,30 +28,24 @@ namespace VirusForecast.Tests
 
         public AccountControllerTests()
         {
-            var fakeUserManager = new FakeUserManagerBuilder()
-        .Build();
-            var fakeSignInManager = new FakeSignInManagerBuilder()
-                .With(x => x.Setup(sm => sm.PasswordSignInAsync(It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success))
-                .Build();
-
-
+            MemoryApplicationContext context = new MemoryApplicationContext();
+            doctorRepository = new Mock<DoctorRepository>(context.Context, context.UserManager).Object;
+            clinicRepository = new Mock<ClinicRepository>(context.Context).Object;
             var mock = new Mock<ILogger<AccountController>>();
+
             ILogger<AccountController> logger = mock.Object;
 
-            var dbContext = GetInMemoryDbContext();
-            clinicRepository = new ClinicRepository(dbContext);
-            doctorRepository = new DoctorRepository(dbContext, fakeUserManager.Object);
-            accountController = new AccountController(fakeSignInManager.Object, doctorRepository, clinicRepository, logger);
+            accountController = new AccountController(context.SignInManager, doctorRepository, clinicRepository, logger);
+
+
+
         }
 
         [Fact]
         public void Register()
         {
             var result = accountController.Register();
+
             Assert.IsType<ViewResult>(result);
         }
 
@@ -82,22 +78,7 @@ namespace VirusForecast.Tests
         public void LogOut()
         {
             var actionResultTask = accountController.Logout();
-            actionResultTask.Wait();
-            var viewResult = actionResultTask.Result as ViewResult;
-            //Assert.NotNull(viewResult);
-            Assert.Equal("Home", viewResult.ViewName);
-        }
-
-        private ApplicationDbContext GetInMemoryDbContext()
-        {
-            DbContextOptions<ApplicationDbContext> options;
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseInMemoryDatabase(":testdb");
-            options = builder.Options;
-            ApplicationDbContext dbContext = new ApplicationDbContext(options);
-            dbContext.Database.EnsureCreated();
-            dbContext.Database.EnsureDeleted();
-            return dbContext;
+            Assert.IsAssignableFrom<Task<IActionResult>>(actionResultTask);
         }
     }
 }

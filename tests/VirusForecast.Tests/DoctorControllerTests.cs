@@ -21,17 +21,20 @@ namespace VirusForecast.Tests
     {
         private readonly ILogger<DoctorController> logger;
         private readonly DoctorController doctorController;
-        private readonly IDoctorRepository doctorRepository;
-        private readonly UserManager<User> userManager;
-        
-        private readonly IClinicRepository clinicRepository;
-
         public DoctorControllerTests()
         {
-            logger = null;
-            var dbContext = GetInMemoryDbContext();
-            doctorRepository = new DoctorRepository(dbContext, userManager);
+
+            MemoryApplicationContext context = new MemoryApplicationContext();
+
+
+            var doctorRepository = new Mock<DoctorRepository>(context.Context, context.UserManager).Object;
+            var clinicRepository = new Mock<ClinicRepository>(context.Context).Object;
+            var mock = new Mock<ILogger<DoctorController>>();
+
+            ILogger<DoctorController> logger = mock.Object;
+
             doctorController = new DoctorController(doctorRepository,clinicRepository, logger);
+
         }
 
         [Fact]
@@ -51,7 +54,7 @@ namespace VirusForecast.Tests
         }
         
         [Fact]
-        public void Add()
+        public async Task Add()
         {
             var newDoctor = new AddEditViewModel
             {
@@ -61,22 +64,12 @@ namespace VirusForecast.Tests
                 ConfirmPassword = "12345678A."
             };
 
-            var result = doctorController.Add(newDoctor);
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var testDoctor = Assert.IsType<User>(viewResult.Model);
+            var result = await doctorController.Add(newDoctor) as Task<ViewResult>;
+            var viewResult = result.Result;
+            var model = (User)viewResult.Model;
+            Assert.NotNull(model);
+            var testDoctor = Assert.IsAssignableFrom<User>(viewResult.Model);
             Assert.Equal(newDoctor.Email, testDoctor.Email);
         } 
-
-        private ApplicationDbContext GetInMemoryDbContext()
-        {
-            DbContextOptions<ApplicationDbContext> options;
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseInMemoryDatabase(":testdb");
-            options = builder.Options;
-            ApplicationDbContext dbContext = new ApplicationDbContext(options);
-            dbContext.Database.EnsureCreated();
-            dbContext.Database.EnsureDeleted();
-            return dbContext;
-        }
     }
 }

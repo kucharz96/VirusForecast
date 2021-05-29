@@ -34,7 +34,7 @@ namespace VirusForecast.Controllers
         }
 
         // GET: DoctorController
-        public ActionResult List()
+        public IActionResult List()
         {
             IEnumerable<User> doctors = _doctorRepository.GetAll();
             var list = doctors.Select(x => new DoctorListViewModel()
@@ -87,7 +87,7 @@ namespace VirusForecast.Controllers
                     if (errors == null)
                     {
                         _logger.LogInformation("Doctor added");
-                        return RedirectToAction(nameof(List));
+                        return (IActionResult)RedirectToAction(nameof(DoctorController.List), "Doctor");
                     }
                     else
                     {
