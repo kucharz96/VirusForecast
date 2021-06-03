@@ -116,13 +116,14 @@ namespace VirusForecast.Controllers
 
             var doctor = _doctorRepository.Get(id);
 
-            var model = new AddEditViewModel
+            var model = new EditViewModel
             {
                 Clinics = allClinics,
                 Id = doctor.Id,
                 Email = doctor.Email,
                 EmailConfirmed = doctor.EmailConfirmed,
-                ClinicId = doctor.ClinicId
+                ClinicId = doctor.ClinicId,
+                //Password = doctor.PasswordHash,
             };
             return View(model);
         }
@@ -130,7 +131,7 @@ namespace VirusForecast.Controllers
         // POST: DoctorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(AddEditViewModel model)
+        public ActionResult Edit(EditViewModel model)
         {
             var allClinics = _clinicRepository.GetAll()
             .Select(a => new SelectListItem

@@ -13,7 +13,7 @@ namespace VirusForecast.Data.Interfaces
         List<User> GetAll();
         Task<IEnumerable<IdentityError>> Add(User user, string password);
         User Get(string id);
-        void Edit(AddEditViewModel model);
+        void Edit(EditViewModel model);
         void Delete(string id);
         bool CheckIfEmailConfirmed(string email);
     }

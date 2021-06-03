@@ -29,7 +29,7 @@
                     titleTemp = "Clinic";
                     break;
                 case 2:
-                    titleTemp = "Is email confirmed?";
+                    titleTemp = "Is account confirmed?";
                     break;
                 case 3:
                     titleTemp = "Actions";

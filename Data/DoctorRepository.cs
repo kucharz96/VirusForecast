@@ -53,14 +53,14 @@ namespace VirusForecast.Data
         {
             return _context.Users.Find(id);
         }
-        public void Edit(AddEditViewModel model)
+        public void Edit(EditViewModel model)
         {
             var user = Get(model.Id);
             user.EmailConfirmed = model.EmailConfirmed;
             user.Email = model.Email;
             user.ClinicId = model.ClinicId;
             user.UserName = model.Email;
-            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,model.Password);
+            //user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,model.Password);
             _context.SaveChanges();
         }
 
