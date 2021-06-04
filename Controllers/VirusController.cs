@@ -275,6 +275,14 @@ namespace VirusForecast.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
+
+                var allClinics = _clinicRepository.GetAll()
+                  .Select(a => new SelectListItem
+                  { Text = a.Name, Value = a.Id.ToString() }
+                  ).ToList();
+                model.Clinics = allClinics;
+
+                return View(model);
             }
 
 
